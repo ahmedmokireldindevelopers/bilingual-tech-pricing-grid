@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { 
   Carousel, 
@@ -16,9 +16,10 @@ const TestimonialsSection: React.FC = () => {
   const { t, isRtl } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
+  const [autoPlay, setAutoPlay] = useState(true);
   
   // Update the active index when the carousel slides
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) return;
     
     const handleSelect = () => {
@@ -31,6 +32,17 @@ const TestimonialsSection: React.FC = () => {
       api.off("select", handleSelect);
     };
   }, [api]);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!api || !autoPlay) return;
+    
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 5000); // Change slide every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, [api, autoPlay]);
   
   const testimonials = [
     {
@@ -200,11 +212,16 @@ const TestimonialsSection: React.FC = () => {
             }}
             className="w-full max-w-5xl mx-auto"
             setApi={setApi}
+            onMouseEnter={() => setAutoPlay(false)}
+            onMouseLeave={() => setAutoPlay(true)}
           >
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
-                  <Card className={`border-2 h-full transition-all duration-500 ${
+                <CarouselItem 
+                  key={index} 
+                  className="md:basis-1/2 lg:basis-1/3 pl-4 transition-all duration-500"
+                >
+                  <Card className={`border-2 h-full transition-all duration-500 hover:shadow-lg hover:-translate-y-1 ${
                     activeIndex === index ? "border-tech-blue shadow-lg" : "border-gray-200"
                   }`}>
                     <CardContent className="p-6">
@@ -215,6 +232,7 @@ const TestimonialsSection: React.FC = () => {
                               src={testimonial.avatar}
                               alt={testimonial.name}
                               className="w-full h-full object-cover"
+                              loading="lazy"
                               onError={(e) => {
                                 e.currentTarget.src = "/placeholder.svg";
                               }}

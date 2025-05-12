@@ -112,13 +112,15 @@ const IntegratedPlatforms: React.FC = () => {
                 <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/4">
                   <div className="platform-card animate-fade-in h-40 flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                     <div 
-                      className="w-16 h-16 mb-3 rounded-full flex items-center justify-center p-2"
+                      className="w-20 h-20 mb-3 rounded-full flex items-center justify-center p-3 relative overflow-hidden shadow-md"
                       style={{ backgroundColor: `${platform.color}20` }}
                     >
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-white/10 animate-pulse" />
                       <img
                         src={platform.icon}
                         alt={platform.name}
-                        className="w-10 h-10 object-contain"
+                        className="w-14 h-14 object-contain"
+                        loading="lazy"
                         onError={(e) => {
                           e.currentTarget.src = "/placeholder.svg";
                         }}

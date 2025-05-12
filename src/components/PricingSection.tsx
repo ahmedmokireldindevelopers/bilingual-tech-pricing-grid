@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, X, ArrowRight, MessageSquare } from "lucide-react";
+import { Check, X, ArrowRight, MessageSquare, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MessageCalculator from "./MessageCalculator";
 
@@ -260,6 +260,49 @@ const PricingSection: React.FC = () => {
           </h3>
           <div className="max-w-2xl mx-auto">
             <MessageCalculator />
+            
+            <div className="mt-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <h4 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                <Link size={18} className="text-tech-blue" />
+                {t("Understanding WhatsApp Message Types", "فهم أنواع رسائل واتساب")}
+              </h4>
+              
+              <p className="mb-4">
+                {t(
+                  "Different message types have different pricing and features. Learn more about the differences between User-Initiated, Business-Initiated, and Service messages.",
+                  "تختلف أنواع الرسائل من حيث الأسعار والميزات. تعرف على المزيد حول الاختلافات بين الرسائل التي يبدأها المستخدم والرسائل التي تبدأها الشركة ورسائل الخدمة."
+                )}
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-white p-4 rounded border border-gray-200">
+                  <img 
+                    src="https://scontent.fcai19-6.fna.fbcdn.net/v/t39.2365-6/387103807_709767617086680_8758572233270544545_n.png?_nc_cat=104&ccb=1-7&_nc_sid=14755e&_nc_ohc=HD2PEzKUkDcAX8h6XoA&_nc_ht=scontent.fcai19-6.fna&oh=00_AfCV5YCxGAv2_2SA7rXYH-E329JXRdX-6Jg3UvxI4zY3Qw&oe=66023858" 
+                    alt="WhatsApp Message Types" 
+                    className="w-full h-auto rounded" 
+                  />
+                </div>
+                <div className="bg-white p-4 rounded border border-gray-200">
+                  <img 
+                    src="https://scontent.fcai19-6.fna.fbcdn.net/v/t39.2365-6/387084293_304701432261242_4716256922159419997_n.png?_nc_cat=110&ccb=1-7&_nc_sid=14755e&_nc_ohc=vRyXPP2MF-AAX8g-UXv&_nc_ht=scontent.fcai19-6.fna&oh=00_AfC6DIXDVYKzx5eutZApc2DK2Tmes9wQzCiIVvW-NOecow&oe=66035493" 
+                    alt="WhatsApp Conversation Types" 
+                    className="w-full h-auto rounded" 
+                  />
+                </div>
+              </div>
+              
+              <div className="flex justify-center mt-4">
+                <a 
+                  href="https://www.facebook.com/business/help/213629561949441" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-tech-blue hover:underline flex items-center gap-2"
+                >
+                  <span>{t("Learn more about WhatsApp Business API pricing", "تعرف على المزيد حول أسعار واجهة برمجة تطبيقات WhatsApp Business")}</span>
+                  <ArrowRight size={16} />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
