@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, X, ArrowRight, WhatsApp } from "lucide-react";
+import { Check, X, ArrowRight, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const PricingSection: React.FC = () => {
@@ -239,7 +239,7 @@ const PricingSection: React.FC = () => {
                   rel="noopener noreferrer"
                   className="cta-button flex items-center justify-center gap-2"
                 >
-                  <WhatsApp size={18} />
+                  <MessageSquare size={18} />
                   <span>{t("Contact on WhatsApp", "تواصل على واتساب")}</span>
                 </a>
                 <a 

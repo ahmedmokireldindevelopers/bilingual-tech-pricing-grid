@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Mail, Phone, Globe, WhatsApp } from "lucide-react";
+import { Mail, Phone, Globe, MessageSquare } from "lucide-react";
 
 const Header: React.FC = () => {
   const { t, toggleLanguage, language, isRtl } = useLanguage();
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
                 <span className="hidden md:inline">+201004101309</span>
               </a>
               <a href="https://wa.me/201006334062" target="_blank" rel="noopener noreferrer" className="contact-link">
-                <WhatsApp size={18} />
+                <MessageSquare size={18} />
                 <span className="hidden md:inline">+201006334062</span>
               </a>
             </div>
