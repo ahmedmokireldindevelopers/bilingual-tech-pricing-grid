@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { 
@@ -183,9 +182,8 @@ const TestimonialsSection: React.FC = () => {
             }}
             className="w-full max-w-5xl mx-auto"
             onSelect={(api) => {
-              const selectedIndex = api?.selectedScrollSnap();
-              if (selectedIndex !== undefined) {
-                setActiveIndex(selectedIndex);
+              if (api) {
+                setActiveIndex(api.selectedScrollSnap());
               }
             }}
           >
