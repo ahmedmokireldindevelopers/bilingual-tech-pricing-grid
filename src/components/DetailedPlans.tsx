@@ -2,7 +2,7 @@
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, FileText, ArrowRight, MessageSquare, FileCode } from "lucide-react";
+import { Check, FileText, ArrowRight, MessageSquare, FileCode, X } from "lucide-react";
 
 const DetailedPlans: React.FC = () => {
   const { t, isRtl } = useLanguage();
