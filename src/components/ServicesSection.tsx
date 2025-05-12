@@ -39,7 +39,8 @@ const ServicesSection: React.FC = () => {
           en: "Domain verification",
           ar: "التحقق من النطاق"
         }
-      ]
+      ],
+      image: "/images/facebook-verification.png"
     },
     {
       id: 2,
@@ -65,7 +66,8 @@ const ServicesSection: React.FC = () => {
           en: "Automated messaging",
           ar: "المراسلة الآلية"
         }
-      ]
+      ],
+      image: "/images/whatsapp-api.png"
     },
     {
       id: 3,
@@ -91,7 +93,8 @@ const ServicesSection: React.FC = () => {
           en: "Account setup",
           ar: "إعداد الحساب"
         }
-      ]
+      ],
+      image: "/images/sendpulse-grant.png"
     },
     {
       id: 4,
@@ -117,7 +120,8 @@ const ServicesSection: React.FC = () => {
           en: "Advanced integrations",
           ar: "تكاملات متقدمة"
         }
-      ]
+      ],
+      image: "/images/make-workflows.png"
     },
     {
       id: 5,
@@ -143,7 +147,8 @@ const ServicesSection: React.FC = () => {
           en: "Automated publishing",
           ar: "النشر الآلي"
         }
-      ]
+      ],
+      image: "/images/wordpress-integration.png"
     },
     {
       id: 6,
@@ -169,7 +174,8 @@ const ServicesSection: React.FC = () => {
           en: "System maintenance",
           ar: "صيانة النظام"
         }
-      ]
+      ],
+      image: "/images/technical-support.png"
     }
   ];
 
@@ -188,7 +194,19 @@ const ServicesSection: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {services.map((service) => (
-            <div key={service.id} className="service-card animate-fade-in">
+            <div key={service.id} className="service-card animate-fade-in overflow-hidden">
+              {service.image && (
+                <div className="h-40 overflow-hidden -mx-6 -mt-6 mb-4">
+                  <img 
+                    src={service.image} 
+                    alt={isRtl ? service.title.ar : service.title.en}
+                    className="w-full h-full object-cover object-center"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
               <div className="service-icon mb-4">
                 {service.icon}
               </div>

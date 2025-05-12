@@ -4,6 +4,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import ServicesSection from "@/components/ServicesSection";
 import PricingSection from "@/components/PricingSection";
+import DetailedPlans from "@/components/DetailedPlans";
 import NotesSection from "@/components/NotesSection";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -21,6 +22,7 @@ const Index = () => {
         <main>
           <ServicesSection />
           <PricingSection />
+          <DetailedPlans />
           <NotesSection />
           <ContactForm />
         </main>
