@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,16 +16,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 238 83% 54%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 238 80% 77%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 348 100% 70%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,19 +38,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -88,6 +84,22 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .rtl {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  .ltr {
+    direction: ltr;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+  }
 }
 
 @layer base {
@@ -96,6 +108,44 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  .service-card {
+    @apply border rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white;
+  }
+
+  .price-card {
+    @apply border rounded-xl p-6 transition-all duration-300 hover:shadow-xl bg-white overflow-hidden relative;
+  }
+
+  .feature-list li {
+    @apply flex items-center gap-2 mb-2;
+  }
+
+  .service-icon {
+    @apply rounded-full p-3 bg-tech-light text-tech-blue flex items-center justify-center w-12 h-12;
+  }
+
+  .cta-button {
+    @apply bg-tech-blue text-white py-3 px-6 rounded-lg font-medium transition-all hover:bg-tech-dark;
+  }
+
+  .secondary-button {
+    @apply border border-tech-blue text-tech-blue py-3 px-6 rounded-lg font-medium transition-all hover:bg-tech-light;
+  }
+
+  .contact-link {
+    @apply flex items-center gap-2 text-tech-dark hover:text-tech-blue transition-colors;
+  }
+
+  .section-title {
+    @apply text-3xl font-bold mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-muted-foreground mb-8 max-w-3xl mx-auto;
   }
 }
