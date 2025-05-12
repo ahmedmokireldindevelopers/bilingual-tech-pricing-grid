@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,16 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.platform-card {
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.platform-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--tech-blue);
 }
