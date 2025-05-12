@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { 
@@ -5,7 +6,8 @@ import {
   CarouselContent, 
   CarouselItem, 
   CarouselNext, 
-  CarouselPrevious 
+  CarouselPrevious,
+  type CarouselApi
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Quote } from "lucide-react";
@@ -13,6 +15,22 @@ import { Star, Quote } from "lucide-react";
 const TestimonialsSection: React.FC = () => {
   const { t, isRtl } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  
+  // Update the active index when the carousel slides
+  React.useEffect(() => {
+    if (!api) return;
+    
+    const handleSelect = () => {
+      setActiveIndex(api.selectedScrollSnap());
+    };
+    
+    api.on("select", handleSelect);
+    // Cleanup listener on unmount
+    return () => {
+      api.off("select", handleSelect);
+    };
+  }, [api]);
   
   const testimonials = [
     {
@@ -181,11 +199,7 @@ const TestimonialsSection: React.FC = () => {
               loop: true,
             }}
             className="w-full max-w-5xl mx-auto"
-            onSelect={(api) => {
-              if (api) {
-                setActiveIndex(api.selectedScrollSnap());
-              }
-            }}
+            setApi={setApi}
           >
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
