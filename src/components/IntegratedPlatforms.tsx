@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const IntegratedPlatforms: React.FC = () => {
   const { t, isRtl } = useLanguage();
@@ -16,52 +17,52 @@ const IntegratedPlatforms: React.FC = () => {
   const platforms = [
     {
       name: "Facebook",
-      icon: "/images/integrations/facebook.png",
+      icon: "/images/platforms/facebook.svg",
       color: "#1877F2",
     },
     {
       name: "WhatsApp",
-      icon: "/images/integrations/whatsapp.png",
+      icon: "/images/platforms/whatsapp.svg",
       color: "#25D366",
     },
     {
       name: "Instagram",
-      icon: "/images/integrations/instagram.png",
+      icon: "/images/platforms/instagram.svg",
       color: "#E4405F",
     },
     {
       name: "SendPulse",
-      icon: "/images/integrations/sendpulse.png",
+      icon: "/images/platforms/sendpulse.svg",
       color: "#0084FF",
     },
     {
       name: "WordPress",
-      icon: "/images/integrations/wordpress.png",
+      icon: "/images/platforms/wordpress.svg",
       color: "#21759B",
     },
     {
       name: "Make.com",
-      icon: "/images/integrations/make.png",
+      icon: "/images/platforms/make.svg",
       color: "#000000",
     },
     {
       name: "N8N",
-      icon: "/images/integrations/n8n.png",
+      icon: "/images/platforms/n8n.svg",
       color: "#6933FF",
     },
     {
       name: "Zapier",
-      icon: "/images/integrations/zapier.png",
+      icon: "/images/platforms/zapier.svg",
       color: "#FF4A00",
     },
     {
       name: "Shopify",
-      icon: "/images/integrations/shopify.png",
+      icon: "/images/platforms/shopify.svg",
       color: "#7AB55C",
     },
     {
       name: "WooCommerce",
-      icon: "/images/integrations/woocommerce.png",
+      icon: "/images/platforms/woocommerce.svg",
       color: "#96588A",
     },
   ];
@@ -116,15 +117,26 @@ const IntegratedPlatforms: React.FC = () => {
                       style={{ backgroundColor: `${platform.color}20` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-transparent to-white/10 animate-pulse" />
-                      <img
-                        src={platform.icon}
-                        alt={platform.name}
-                        className="w-14 h-14 object-contain"
-                        loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.src = "/placeholder.svg";
-                        }}
-                      />
+                      <AspectRatio ratio={1/1} className="w-14 h-14">
+                        <img
+                          src={platform.icon}
+                          alt={platform.name}
+                          className="w-full h-full object-contain"
+                          loading="lazy"
+                          onError={(e) => {
+                            // Fallback to PNG if SVG fails to load
+                            const src = e.currentTarget.src;
+                            if (src.endsWith('.svg')) {
+                              e.currentTarget.src = src.replace('.svg', '.png');
+                            } else if (src.endsWith('.png')) {
+                              // If PNG also fails, try the original integrations folder
+                              e.currentTarget.src = src.replace('/platforms/', '/integrations/');
+                            } else {
+                              e.currentTarget.src = "/placeholder.svg";
+                            }
+                          }}
+                        />
+                      </AspectRatio>
                     </div>
                     <h3 className="text-center font-medium">{platform.name}</h3>
                   </div>
