@@ -174,8 +174,8 @@ const PartnersSection: React.FC = () => {
                   className="flex-shrink-0 w-44 bg-card border border-border/60 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:border-primary/30 hover:-translate-y-2 transition-all duration-300 group"
                 >
                   {/* Flag */}
-                  <div className="w-full h-20 mb-4 overflow-hidden rounded-lg group-hover:scale-105 transition-transform duration-300">
-                    {country.flag}
+                  <div className="w-full h-20 mb-3 overflow-hidden rounded-lg group-hover:scale-105 transition-transform duration-300">
+                    <FlagIcon code={country.flagCode} alt={country.name.en} />
                   </div>
 
                   {/* Country info */}
@@ -185,6 +185,16 @@ const PartnersSection: React.FC = () => {
                   <p className="text-xs text-muted-foreground text-center mb-2">
                     {isRtl ? country.description.ar : country.description.en}
                   </p>
+
+                  {/* Company icons */}
+                  <div className="flex flex-wrap justify-center gap-1 mb-3">
+                    {country.icons.map((comp, i) => (
+                      <span key={i} className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted/60 rounded-full px-2 py-0.5">
+                        {comp.icon}
+                        {comp.label}
+                      </span>
+                    ))}
+                  </div>
 
                   {/* Badge */}
                   <div className="flex justify-center">
