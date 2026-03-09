@@ -14,16 +14,171 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      courses: {
+        Row: {
+          created_at: string
+          description_ar: string
+          description_en: string
+          features: Json
+          id: string
+          modules: Json
+          price: string
+          sort_order: number
+          title_ar: string
+          title_en: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_ar: string
+          description_en: string
+          features?: Json
+          id?: string
+          modules?: Json
+          price: string
+          sort_order?: number
+          title_ar: string
+          title_en: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          features?: Json
+          id?: string
+          modules?: Json
+          price?: string
+          sort_order?: number
+          title_ar?: string
+          title_en?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pricing_plans: {
+        Row: {
+          created_at: string
+          description_ar: string
+          description_en: string
+          features: Json
+          id: string
+          is_highlighted: boolean
+          name_ar: string
+          name_en: string
+          price_annual_local: string | null
+          price_annual_usd: string | null
+          price_local: string
+          price_usd: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_ar: string
+          description_en: string
+          features?: Json
+          id?: string
+          is_highlighted?: boolean
+          name_ar: string
+          name_en: string
+          price_annual_local?: string | null
+          price_annual_usd?: string | null
+          price_local: string
+          price_usd: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          features?: Json
+          id?: string
+          is_highlighted?: boolean
+          name_ar?: string
+          name_en?: string
+          price_annual_local?: string | null
+          price_annual_usd?: string | null
+          price_local?: string
+          price_usd?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string
+          description_ar: string
+          description_en: string
+          features: Json
+          icon: string
+          id: string
+          sort_order: number
+          title_ar: string
+          title_en: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_ar: string
+          description_en: string
+          features?: Json
+          icon?: string
+          id?: string
+          sort_order?: number
+          title_ar: string
+          title_en: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          features?: Json
+          icon?: string
+          id?: string
+          sort_order?: number
+          title_ar?: string
+          title_en?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +305,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
