@@ -528,6 +528,7 @@ const CourseDetailView: React.FC<{
             </div>
           </div>
         </div>
+      </section>
 
       {/* Course Phases */}
       <section id="curriculum" className="py-16 bg-muted/10">
