@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Mail, Phone, Globe, MessageSquare, Database } from "lucide-react";
+import { Mail, Phone, Globe, MessageSquare, Database, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
@@ -42,6 +42,12 @@ const Header: React.FC = () => {
               <Button variant="ghost" className="flex items-center gap-1">
                 <Database size={16} />
                 <span>{t("Data Store", "متجر البيانات")}</span>
+              </Button>
+            </Link>
+            <Link to="/courses">
+              <Button variant="ghost" className="flex items-center gap-1">
+                <GraduationCap size={16} />
+                <span>{t("Courses", "الكورسات")}</span>
               </Button>
             </Link>
             <Button 

@@ -8,7 +8,20 @@ import DataStoreCTA from "@/components/data-store/DataStoreCTA";
 import DataStorePricing from "@/components/data-store/DataStorePricing";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, RefreshCw, Headphones, Filter, X } from "lucide-react";
+import { Shield, RefreshCw, Headphones, Filter, X, Database, DollarSign, Package } from "lucide-react";
+
+const countryFlags: Record<string, string> = {
+  "Saudi Arabia": "🇸🇦",
+  "UAE": "🇦🇪",
+  "Egypt": "🇪🇬",
+  "Kuwait": "🇰🇼",
+  "Oman": "🇴🇲",
+  "GCC": "🇸🇦",
+  "MENA": "🌍",
+  "Arab World": "🌍",
+  "Bahrain": "🇧🇭",
+  "Qatar": "🇶🇦",
+};
 
 const datasets: DatasetEntry[] = [
   {
@@ -141,6 +154,8 @@ const datasets: DatasetEntry[] = [
   },
 ];
 
+export { countryFlags };
+
 const DataStore: React.FC = () => {
   const { t, isRtl } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -172,9 +187,65 @@ const DataStore: React.FC = () => {
 
   const hasFilters = selectedCategory || selectedCountry;
 
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className={`min-h-screen bg-background ${isRtl ? "rtl" : "ltr"}`} dir={isRtl ? "rtl" : "ltr"}>
       <Header />
+
+      {/* Sticky Page Navigation */}
+      <nav className="sticky top-[72px] z-40 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-2 py-3 overflow-x-auto scrollbar-hide">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="shrink-0 gap-2 text-xs font-semibold"
+              onClick={() => scrollTo("datasets")}
+            >
+              <Database size={14} />
+              {t("Datasets", "البيانات")}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="shrink-0 gap-2 text-xs font-semibold"
+              onClick={() => scrollTo("pricing")}
+            >
+              <DollarSign size={14} />
+              {t("Pricing", "الأسعار")}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="shrink-0 gap-2 text-xs font-semibold"
+              onClick={() => scrollTo("custom")}
+            >
+              <Package size={14} />
+              {t("Custom Package", "باقة مخصصة")}
+            </Button>
+
+            <div className="h-5 w-px bg-border mx-1 shrink-0" />
+
+            {/* Country quick filters with flags */}
+            {countries.map((c) => (
+              <Button
+                key={c.en}
+                variant={selectedCountry === c.en ? "default" : "outline"}
+                size="sm"
+                className="shrink-0 text-xs h-8 rounded-full gap-1.5"
+                onClick={() => setSelectedCountry(selectedCountry === c.en ? null : c.en)}
+              >
+                <span className="text-sm">{countryFlags[c.en] || "🏳️"}</span>
+                {t(c.en, c.ar)}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
       <DataStoreHero />
 
       {/* Trust badges */}
@@ -253,7 +324,7 @@ const DataStore: React.FC = () => {
               </div>
             </div>
 
-            {/* Country filters */}
+            {/* Country filters with flags */}
             <div>
               <span className="text-xs text-muted-foreground mb-2 block">
                 {t("Country / Region", "الدولة / المنطقة")}
@@ -264,9 +335,10 @@ const DataStore: React.FC = () => {
                     key={c.en}
                     variant={selectedCountry === c.en ? "default" : "outline"}
                     size="sm"
-                    className="text-xs h-8 rounded-full"
+                    className="text-xs h-8 rounded-full gap-1.5"
                     onClick={() => setSelectedCountry(selectedCountry === c.en ? null : c.en)}
                   >
+                    <span className="text-sm">{countryFlags[c.en] || "🏳️"}</span>
                     {t(c.en, c.ar)}
                   </Button>
                 ))}
@@ -306,10 +378,12 @@ const DataStore: React.FC = () => {
       </section>
 
       {/* Pricing Section */}
-      <DataStorePricing />
+      <div id="pricing">
+        <DataStorePricing />
+      </div>
 
       {/* Custom CTA */}
-      <section className="py-16 bg-muted/30">
+      <section id="custom" className="py-16 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             {t("Need a Custom Package?", "تحتاج باقة مخصصة؟")}
