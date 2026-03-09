@@ -39,9 +39,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400">
+        <div className="border-t border-border/20 mt-6 pt-6 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {currentYear} {t("Tech Services. All rights reserved.", "الخدمات التقنية. جميع الحقوق محفوظة.")}
+            &copy; {currentYear} {t("Ahmed Mo Kireldin. All rights reserved.", "أحمد محمد كيرالدين. جميع الحقوق محفوظة.")}
           </p>
         </div>
       </div>
