@@ -38,6 +38,12 @@ const Header: React.FC = () => {
               </a>
             </div>
             
+            <Link to="/data">
+              <Button variant="ghost" className="flex items-center gap-1">
+                <Database size={16} />
+                <span>{t("Data Store", "متجر البيانات")}</span>
+              </Button>
+            </Link>
             <Button 
               onClick={toggleLanguage} 
               variant="outline" 
