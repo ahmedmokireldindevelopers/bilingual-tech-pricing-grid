@@ -54,6 +54,7 @@ interface CourseData {
   discountEn: string;
   discountAr: string;
   whatsappLink: string;
+  vimeoId: string;
 }
 
 // ─── Course 1: WhatsApp Professional ───
