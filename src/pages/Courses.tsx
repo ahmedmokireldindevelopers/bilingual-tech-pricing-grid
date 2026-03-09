@@ -9,10 +9,27 @@ import { Badge } from "@/components/ui/badge";
 import {
   Play, Users, Star, Clock, BookOpen, ChevronDown, ChevronUp,
   MessageSquare, Award, Target, Zap, TrendingUp, CheckCircle2,
-  ArrowLeft, ArrowRight, Send, Database, Globe, Phone,
-  Bot, Settings, BarChart3, Shield, Megaphone, Search,
-  FileSpreadsheet, Mail, Smartphone, Layers
+  ArrowLeft, ArrowRight, GraduationCap, Rocket, ShieldCheck,
+  Globe, Phone, Bot, BarChart3, Search, Mail, Layers,
+  Send, Wifi, Radio, UserCheck, Heart, Sparkles,
+  MousePointerClick, MonitorSmartphone, Megaphone, PieChart,
+  Code2, Database, Filter, BrainCircuit, Handshake, DollarSign,
+  LineChart, Workflow, Puzzle, Video
 } from "lucide-react";
+
+// ─── Animation variants ───
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.1 },
+  }),
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.08 } },
+};
 
 // ─── Course Data Types ───
 interface CourseModule {
@@ -20,6 +37,7 @@ interface CourseModule {
   titleAr: string;
   lessons: number;
   duration: string;
+  icon: React.ReactNode;
   topics: { en: string; ar: string }[];
 }
 
@@ -41,10 +59,12 @@ interface CourseData {
   descriptionEn: string;
   descriptionAr: string;
   icon: React.ReactNode;
-  color: string;
+  gradientFrom: string;
+  gradientTo: string;
   heroTagEn: string;
   heroTagAr: string;
-  stats: { valueEn: string; valueAr: string; labelEn: string; labelAr: string }[];
+  features: { icon: React.ElementType; en: string; ar: string }[];
+  stats: { valueEn: string; valueAr: string; labelEn: string; labelAr: string; icon: React.ElementType }[];
   modules: CourseModule[];
   highlights: { icon: React.ElementType; titleEn: string; titleAr: string; valueEn: string; valueAr: string }[];
   testimonials: CourseTestimonial[];
@@ -67,63 +87,70 @@ const whatsappCourse: CourseData = {
   subtitleAr: "الكورس الاحترافي الشامل لإدارة حملات واتساب",
   descriptionEn: "Master all types of WhatsApp campaigns — from official WhatsApp Business API to mass campaigns using various software tools. Learn automation, chatbots, and advanced messaging strategies.",
   descriptionAr: "أتقن جميع أنواع حملات واتساب — من واتساب بزنس API الرسمي إلى الحملات الجماعية باستخدام برامج متنوعة. تعلّم الأتمتة، الشات بوت، واستراتيجيات المراسلة المتقدمة.",
-  icon: <MessageSquare size={28} />,
-  color: "from-green-500/20 to-emerald-500/10",
+  icon: <MessageSquare size={32} />,
+  gradientFrom: "hsl(var(--primary))",
+  gradientTo: "hsl(142 76% 36%)",
   heroTagEn: "BECOME A WHATSAPP MARKETING EXPERT",
   heroTagAr: "كن خبيرًا في تسويق واتساب",
+  features: [
+    { icon: Send, en: "Official API", ar: "API الرسمي" },
+    { icon: Bot, en: "Chatbots", ar: "شات بوت" },
+    { icon: Radio, en: "Bulk Campaigns", ar: "حملات جماعية" },
+    { icon: Workflow, en: "Automation", ar: "أتمتة" },
+  ],
   stats: [
-    { valueEn: "1200+", valueAr: "+١٢٠٠", labelEn: "Students", labelAr: "طالب" },
-    { valueEn: "25+", valueAr: "+٢٥", labelEn: "Hours of Content", labelAr: "ساعة محتوى" },
-    { valueEn: "4.8/5", valueAr: "٤.٨/٥", labelEn: "Average Rating", labelAr: "متوسط التقييم" },
-    { valueEn: "96%", valueAr: "٩٦٪", labelEn: "Success Rate", labelAr: "نسبة النجاح" },
+    { valueEn: "1200+", valueAr: "+١٢٠٠", labelEn: "Students", labelAr: "طالب", icon: Users },
+    { valueEn: "25+", valueAr: "+٢٥", labelEn: "Hours", labelAr: "ساعة", icon: Clock },
+    { valueEn: "4.8/5", valueAr: "٤.٨/٥", labelEn: "Rating", labelAr: "تقييم", icon: Star },
+    { valueEn: "96%", valueAr: "٩٦٪", labelEn: "Success", labelAr: "نجاح", icon: TrendingUp },
   ],
   modules: [
     {
       titleEn: "WhatsApp Business API Fundamentals",
       titleAr: "أساسيات واتساب بزنس API",
-      lessons: 12,
-      duration: "4h 30m",
+      icon: <Code2 size={20} className="text-primary" />,
+      lessons: 12, duration: "4h 30m",
       topics: [
         { en: "Introduction to WhatsApp Business Platform", ar: "مقدمة في منصة واتساب بزنس" },
         { en: "API Setup & Configuration", ar: "إعداد وتهيئة الـ API" },
         { en: "Message Templates & Approval", ar: "قوالب الرسائل والموافقة عليها" },
         { en: "Webhook Integration", ar: "تكامل Webhook" },
-        { en: "BSP Selection (360dialog, Twilio, etc.)", ar: "اختيار مزود الخدمة (360dialog, Twilio, إلخ)" },
+        { en: "BSP Selection (360dialog, Twilio)", ar: "اختيار مزود الخدمة (360dialog, Twilio)" },
         { en: "Green Tick Verification", ar: "توثيق العلامة الخضراء" },
       ],
     },
     {
       titleEn: "Mass WhatsApp Campaigns",
       titleAr: "حملات واتساب الجماعية",
-      lessons: 15,
-      duration: "5h 15m",
+      icon: <Megaphone size={20} className="text-primary" />,
+      lessons: 15, duration: "5h 15m",
       topics: [
-        { en: "Campaign Software Overview (WaSender, WATool, etc.)", ar: "نظرة عامة على برامج الحملات (WaSender, WATool, إلخ)" },
+        { en: "Campaign Software (WaSender, WATool)", ar: "برامج الحملات (WaSender, WATool)" },
         { en: "Number Filtering & Validation", ar: "فلترة الأرقام والتحقق منها" },
-        { en: "Anti-Ban Strategies & Best Practices", ar: "استراتيجيات منع الحظر وأفضل الممارسات" },
+        { en: "Anti-Ban Strategies", ar: "استراتيجيات منع الحظر" },
         { en: "Bulk Message Scheduling", ar: "جدولة الرسائل الجماعية" },
-        { en: "Multi-Device & Multi-Account Setup", ar: "إعداد أجهزة وحسابات متعددة" },
+        { en: "Multi-Device Setup", ar: "إعداد أجهزة متعددة" },
         { en: "Group Marketing Techniques", ar: "تقنيات التسويق عبر المجموعات" },
       ],
     },
     {
       titleEn: "Chatbot & Automation",
       titleAr: "الشات بوت والأتمتة",
-      lessons: 10,
-      duration: "3h 45m",
+      icon: <Bot size={20} className="text-primary" />,
+      lessons: 10, duration: "3h 45m",
       topics: [
         { en: "Building WhatsApp Chatbots", ar: "بناء شات بوت واتساب" },
         { en: "Flow Builder & Interactive Messages", ar: "بناء التدفقات والرسائل التفاعلية" },
-        { en: "Auto-Reply & Quick Replies Setup", ar: "إعداد الردود التلقائية والسريعة" },
-        { en: "Integration with CRM Systems", ar: "التكامل مع أنظمة إدارة العملاء" },
+        { en: "Auto-Reply & Quick Replies", ar: "الردود التلقائية والسريعة" },
+        { en: "CRM Integration", ar: "التكامل مع أنظمة إدارة العملاء" },
         { en: "N8N & Make.com Automations", ar: "أتمتة عبر N8N و Make.com" },
       ],
     },
     {
       titleEn: "Advanced Campaign Strategies",
       titleAr: "استراتيجيات الحملات المتقدمة",
-      lessons: 8,
-      duration: "3h 0m",
+      icon: <BarChart3 size={20} className="text-primary" />,
+      lessons: 8, duration: "3h 0m",
       topics: [
         { en: "Segmentation & Targeting", ar: "التقسيم والاستهداف" },
         { en: "A/B Testing Messages", ar: "اختبار A/B للرسائل" },
@@ -134,10 +161,10 @@ const whatsappCourse: CourseData = {
     {
       titleEn: "Compliance & Scaling",
       titleAr: "الامتثال والتوسع",
-      lessons: 6,
-      duration: "2h 30m",
+      icon: <ShieldCheck size={20} className="text-primary" />,
+      lessons: 6, duration: "2h 30m",
       topics: [
-        { en: "WhatsApp Business Policy & Compliance", ar: "سياسات واتساب بزنس والامتثال" },
+        { en: "WhatsApp Business Policy", ar: "سياسات واتساب بزنس" },
         { en: "Quality Rating Management", ar: "إدارة تصنيف الجودة" },
         { en: "Scaling to 100K+ Messages/Day", ar: "التوسع لأكثر من ١٠٠ ألف رسالة/يوم" },
         { en: "Team Management & Roles", ar: "إدارة الفريق والأدوار" },
@@ -146,11 +173,11 @@ const whatsappCourse: CourseData = {
     {
       titleEn: "Live Projects & Case Studies",
       titleAr: "مشاريع حية ودراسات حالة",
-      lessons: 8,
-      duration: "5h 0m",
+      icon: <Rocket size={20} className="text-primary" />,
+      lessons: 8, duration: "5h 0m",
       topics: [
         { en: "Real Campaign Setup (Live)", ar: "إعداد حملة حقيقية (بث مباشر)" },
-        { en: "E-Commerce WhatsApp Funnels", ar: "قمع مبيعات واتساب للتجارة الإلكترونية" },
+        { en: "E-Commerce WhatsApp Funnels", ar: "قمع مبيعات واتساب" },
         { en: "Lead Generation Campaigns", ar: "حملات توليد العملاء المحتملين" },
         { en: "Client Success Stories", ar: "قصص نجاح العملاء" },
       ],
@@ -163,36 +190,27 @@ const whatsappCourse: CourseData = {
   ],
   testimonials: [
     {
-      nameEn: "Ahmed K.",
-      nameAr: "أحمد ك.",
+      nameEn: "Ahmed K.", nameAr: "أحمد ك.",
       textEn: "After the course, I managed WhatsApp campaigns for 15+ clients across the Gulf with a 92% open rate.",
       textAr: "بعد الكورس، أدرت حملات واتساب لأكثر من ١٥ عميل في الخليج بنسبة فتح ٩٢٪.",
-      resultEn: "15+ clients managed",
-      resultAr: "إدارة +١٥ عميل",
+      resultEn: "15+ clients managed", resultAr: "إدارة +١٥ عميل",
     },
     {
-      nameEn: "Sara M.",
-      nameAr: "سارة م.",
+      nameEn: "Sara M.", nameAr: "سارة م.",
       textEn: "I built a full WhatsApp automation system for my e-commerce store and tripled my sales.",
       textAr: "بنيت نظام أتمتة واتساب كامل لمتجري الإلكتروني وضاعفت مبيعاتي ٣ مرات.",
-      resultEn: "3x sales increase",
-      resultAr: "٣× زيادة في المبيعات",
+      resultEn: "3x sales increase", resultAr: "٣× زيادة في المبيعات",
     },
     {
-      nameEn: "Omar H.",
-      nameAr: "عمر ح.",
+      nameEn: "Omar H.", nameAr: "عمر ح.",
       textEn: "The API section alone was worth the entire course. Now I send 50K+ messages daily for clients.",
       textAr: "قسم الـ API وحده يستحق سعر الكورس كاملاً. الآن أرسل +٥٠ ألف رسالة يوميًا للعملاء.",
-      resultEn: "50K+ msgs/day",
-      resultAr: "+٥٠ ألف رسالة/يوم",
+      resultEn: "50K+ msgs/day", resultAr: "+٥٠ ألف رسالة/يوم",
     },
   ],
-  priceOriginalEn: "LE 8,000",
-  priceOriginalAr: "٨,٠٠٠ ج.م",
-  priceEn: "LE 4,000",
-  priceAr: "٤,٠٠٠ ج.م",
-  discountEn: "50% off — Limited time offer",
-  discountAr: "خصم ٥٠٪ — عرض محدود",
+  priceOriginalEn: "LE 8,000", priceOriginalAr: "٨,٠٠٠ ج.م",
+  priceEn: "LE 4,000", priceAr: "٤,٠٠٠ ج.م",
+  discountEn: "50% off — Limited time offer", discountAr: "خصم ٥٠٪ — عرض محدود",
   whatsappLink: "https://wa.me/201006334062?text=I%20want%20to%20enroll%20in%20the%20WhatsApp%20Marketing%20course",
   vimeoId: "YOUR_WHATSAPP_COURSE_VIMEO_ID",
 };
@@ -204,24 +222,31 @@ const digitalMarketingCourse: CourseData = {
   titleAr: "التسويق الرقمي واستخراج البيانات وواتساب",
   subtitleEn: "The Ultimate Growth Hacking Course: Marketing + Data + Automation",
   subtitleAr: "كورس النمو الشامل: تسويق + بيانات + أتمتة",
-  descriptionEn: "A comprehensive course combining digital marketing strategies, professional data scraping techniques, and WhatsApp marketing integration. Learn to build complete marketing systems from data collection to conversion.",
-  descriptionAr: "كورس شامل يجمع بين استراتيجيات التسويق الرقمي، تقنيات استخراج البيانات الاحترافية، وتكامل تسويق واتساب. تعلّم بناء أنظمة تسويق كاملة من جمع البيانات إلى التحويل.",
-  icon: <Globe size={28} />,
-  color: "from-blue-500/20 to-indigo-500/10",
+  descriptionEn: "A comprehensive course combining digital marketing strategies, professional data scraping techniques, and WhatsApp marketing integration. Build complete systems from data collection to conversion.",
+  descriptionAr: "كورس شامل يجمع بين استراتيجيات التسويق الرقمي، تقنيات استخراج البيانات الاحترافية، وتكامل تسويق واتساب. بناء أنظمة كاملة من جمع البيانات إلى التحويل.",
+  icon: <Globe size={32} />,
+  gradientFrom: "hsl(var(--primary))",
+  gradientTo: "hsl(var(--accent))",
   heroTagEn: "MASTER DIGITAL MARKETING & DATA SCRAPING",
   heroTagAr: "أتقن التسويق الرقمي واستخراج البيانات",
+  features: [
+    { icon: Megaphone, en: "Paid Ads", ar: "إعلانات مدفوعة" },
+    { icon: Database, en: "Data Scraping", ar: "استخراج بيانات" },
+    { icon: MessageSquare, en: "WhatsApp", ar: "واتساب" },
+    { icon: BrainCircuit, en: "Growth Hacking", ar: "نمو سريع" },
+  ],
   stats: [
-    { valueEn: "2500+", valueAr: "+٢٥٠٠", labelEn: "Students", labelAr: "طالب" },
-    { valueEn: "40+", valueAr: "+٤٠", labelEn: "Hours of Content", labelAr: "ساعة محتوى" },
-    { valueEn: "4.7/5", valueAr: "٤.٧/٥", labelEn: "Average Rating", labelAr: "متوسط التقييم" },
-    { valueEn: "94%", valueAr: "٩٤٪", labelEn: "Success Rate", labelAr: "نسبة النجاح" },
+    { valueEn: "2500+", valueAr: "+٢٥٠٠", labelEn: "Students", labelAr: "طالب", icon: Users },
+    { valueEn: "40+", valueAr: "+٤٠", labelEn: "Hours", labelAr: "ساعة", icon: Clock },
+    { valueEn: "4.7/5", valueAr: "٤.٧/٥", labelEn: "Rating", labelAr: "تقييم", icon: Star },
+    { valueEn: "94%", valueAr: "٩٤٪", labelEn: "Success", labelAr: "نجاح", icon: TrendingUp },
   ],
   modules: [
     {
       titleEn: "Digital Marketing Foundations",
       titleAr: "أساسيات التسويق الرقمي",
-      lessons: 15,
-      duration: "5h 30m",
+      icon: <GraduationCap size={20} className="text-primary" />,
+      lessons: 15, duration: "5h 30m",
       topics: [
         { en: "Marketing Psychology & Consumer Behavior", ar: "علم نفس التسويق وسلوك المستهلك" },
         { en: "Branding & Positioning Strategy", ar: "استراتيجية العلامة التجارية والتموضع" },
@@ -234,8 +259,8 @@ const digitalMarketingCourse: CourseData = {
     {
       titleEn: "Paid Advertising Mastery",
       titleAr: "احتراف الإعلانات المدفوعة",
-      lessons: 20,
-      duration: "8h 0m",
+      icon: <MousePointerClick size={20} className="text-primary" />,
+      lessons: 20, duration: "8h 0m",
       topics: [
         { en: "Meta Ads (Facebook & Instagram)", ar: "إعلانات ميتا (فيسبوك وإنستجرام)" },
         { en: "Google Ads & YouTube Ads", ar: "إعلانات جوجل ويوتيوب" },
@@ -249,8 +274,8 @@ const digitalMarketingCourse: CourseData = {
     {
       titleEn: "Data Scraping & Collection",
       titleAr: "استخراج وجمع البيانات",
-      lessons: 18,
-      duration: "7h 0m",
+      icon: <Database size={20} className="text-primary" />,
+      lessons: 18, duration: "7h 0m",
       topics: [
         { en: "Web Scraping Fundamentals", ar: "أساسيات استخراج بيانات الويب" },
         { en: "Google Maps Data Extraction", ar: "استخراج بيانات خرائط جوجل" },
@@ -264,8 +289,8 @@ const digitalMarketingCourse: CourseData = {
     {
       titleEn: "WhatsApp Marketing Integration",
       titleAr: "تكامل تسويق واتساب",
-      lessons: 12,
-      duration: "4h 30m",
+      icon: <MessageSquare size={20} className="text-primary" />,
+      lessons: 12, duration: "4h 30m",
       topics: [
         { en: "WhatsApp Business Setup", ar: "إعداد واتساب بزنس" },
         { en: "Bulk Messaging Campaigns", ar: "حملات الرسائل الجماعية" },
@@ -277,8 +302,8 @@ const digitalMarketingCourse: CourseData = {
     {
       titleEn: "Growth Hacking & Scaling",
       titleAr: "النمو السريع والتوسع",
-      lessons: 10,
-      duration: "4h 0m",
+      icon: <Rocket size={20} className="text-primary" />,
+      lessons: 10, duration: "4h 0m",
       topics: [
         { en: "Building a Complete Marketing System", ar: "بناء نظام تسويق متكامل" },
         { en: "Client Acquisition Strategies", ar: "استراتيجيات اكتساب العملاء" },
@@ -290,8 +315,8 @@ const digitalMarketingCourse: CourseData = {
     {
       titleEn: "Live Projects & Mentorship",
       titleAr: "مشاريع حية وإرشاد",
-      lessons: 8,
-      duration: "6h 0m",
+      icon: <Handshake size={20} className="text-primary" />,
+      lessons: 8, duration: "6h 0m",
       topics: [
         { en: "Real Campaign Execution (Live)", ar: "تنفيذ حملة حقيقية (بث مباشر)" },
         { en: "Data Scraping Live Workshop", ar: "ورشة استخراج بيانات مباشرة" },
@@ -307,36 +332,27 @@ const digitalMarketingCourse: CourseData = {
   ],
   testimonials: [
     {
-      nameEn: "Mohamed F.",
-      nameAr: "محمد ف.",
+      nameEn: "Mohamed F.", nameAr: "محمد ف.",
       textEn: "After joining, I signed multiple clients and started getting them strong results immediately.",
       textAr: "بعد الانضمام، وقعت مع عدة عملاء وبدأت أحقق لهم نتائج قوية فورًا.",
-      resultEn: "Multiple clients signed",
-      resultAr: "توقيع عدة عملاء",
+      resultEn: "Multiple clients signed", resultAr: "توقيع عدة عملاء",
     },
     {
-      nameEn: "Hazem",
-      nameAr: "حازم",
+      nameEn: "Hazem", nameAr: "حازم",
       textEn: "Made 85,000 in sales for one of my clients after applying the course strategies.",
       textAr: "حققت ٨٥,٠٠٠ في المبيعات لأحد عملائي بعد تطبيق استراتيجيات الكورس.",
-      resultEn: "85K in client sales",
-      resultAr: "٨٥ ألف مبيعات",
+      resultEn: "85K in client sales", resultAr: "٨٥ ألف مبيعات",
     },
     {
-      nameEn: "Hatem Y.",
-      nameAr: "حاتم ي.",
+      nameEn: "Hatem Y.", nameAr: "حاتم ي.",
       textEn: "The data scraping module combined with WhatsApp marketing tripled my lead generation.",
       textAr: "قسم استخراج البيانات مع تسويق واتساب ضاعف توليد العملاء المحتملين ٣ مرات.",
-      resultEn: "3x lead generation",
-      resultAr: "٣× توليد عملاء",
+      resultEn: "3x lead generation", resultAr: "٣× توليد عملاء",
     },
   ],
-  priceOriginalEn: "LE 10,000",
-  priceOriginalAr: "١٠,٠٠٠ ج.م",
-  priceEn: "LE 5,000",
-  priceAr: "٥,٠٠٠ ج.م",
-  discountEn: "50% off — Limited time offer",
-  discountAr: "خصم ٥٠٪ — عرض محدود",
+  priceOriginalEn: "LE 10,000", priceOriginalAr: "١٠,٠٠٠ ج.م",
+  priceEn: "LE 5,000", priceAr: "٥,٠٠٠ ج.م",
+  discountEn: "50% off — Limited time offer", discountAr: "خصم ٥٠٪ — عرض محدود",
   whatsappLink: "https://wa.me/201006334062?text=I%20want%20to%20enroll%20in%20the%20Digital%20Marketing%20course",
   vimeoId: "YOUR_DIGITAL_MARKETING_COURSE_VIMEO_ID",
 };
@@ -347,50 +363,87 @@ const allCourses = [whatsappCourse, digitalMarketingCourse];
 const CourseSelectionCard: React.FC<{
   course: CourseData;
   onSelect: () => void;
+  index: number;
   isRtl: boolean;
   t: (en: string, ar: string) => string;
-}> = ({ course, onSelect, isRtl, t }) => (
-  <Card className="group overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border-border/60 cursor-pointer" onClick={onSelect}>
-    <CardContent className="p-0">
-      <div className={`p-8 bg-gradient-to-br ${course.color} border-b border-border`}>
-        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform duration-300">
-          {course.icon}
+}> = ({ course, onSelect, index, isRtl, t }) => (
+  <motion.div
+    variants={fadeUp}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    custom={index}
+  >
+    <Card
+      className="group relative overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border-border/60 cursor-pointer h-full"
+      onClick={onSelect}
+    >
+      {/* Decorative gradient orb */}
+      <div
+        className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
+        style={{ background: `linear-gradient(135deg, ${course.gradientFrom}, ${course.gradientTo})` }}
+      />
+
+      <CardContent className="p-0 relative z-10">
+        {/* Header */}
+        <div className="p-8 pb-6">
+          <div className="flex items-start justify-between mb-6">
+            <motion.div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center text-primary-foreground"
+              style={{ background: `linear-gradient(135deg, ${course.gradientFrom}, ${course.gradientTo})` }}
+              whileHover={{ rotate: [0, -5, 5, 0], scale: 1.05 }}
+              transition={{ duration: 0.5 }}
+            >
+              {course.icon}
+            </motion.div>
+            <Badge variant="secondary" className="text-xs font-semibold">
+              {t(`${course.modules.length} Modules`, `${course.modules.length} وحدة`)}
+            </Badge>
+          </div>
+
+          <h3 className="text-2xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+            {t(course.titleEn, course.titleAr)}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+            {t(course.subtitleEn, course.subtitleAr)}
+          </p>
+
+          {/* Feature pills */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {course.features.map((f, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 text-xs font-medium bg-muted/60 text-muted-foreground rounded-full px-3 py-1.5 border border-border/40">
+                <f.icon size={13} className="text-primary" />
+                {t(f.en, f.ar)}
+              </span>
+            ))}
+          </div>
         </div>
-        <h3 className="text-2xl font-bold text-foreground mb-2">
-          {t(course.titleEn, course.titleAr)}
-        </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {t(course.subtitleEn, course.subtitleAr)}
-        </p>
-      </div>
 
-      <div className="p-6">
-        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-          {t(course.descriptionEn, course.descriptionAr)}
-        </p>
-
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        {/* Stats */}
+        <div className="grid grid-cols-4 gap-0 border-t border-border/60 bg-muted/20">
           {course.stats.map((stat, i) => (
-            <div key={i} className="text-center p-3 bg-muted/40 rounded-xl">
-              <div className="text-lg font-bold text-primary">{t(stat.valueEn, stat.valueAr)}</div>
-              <div className="text-[11px] text-muted-foreground">{t(stat.labelEn, stat.labelAr)}</div>
+            <div key={i} className={`text-center py-4 ${i > 0 ? (isRtl ? "border-r" : "border-l") + " border-border/40" : ""}`}>
+              <stat.icon size={14} className="mx-auto text-primary mb-1.5" />
+              <div className="text-sm font-bold text-foreground">{t(stat.valueEn, stat.valueAr)}</div>
+              <div className="text-[10px] text-muted-foreground">{t(stat.labelEn, stat.labelAr)}</div>
             </div>
           ))}
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Footer */}
+        <div className="flex items-center justify-between p-5 border-t border-border/60">
           <div>
-            <span className="text-sm line-through text-muted-foreground">{t(course.priceOriginalEn, course.priceOriginalAr)}</span>
-            <span className="text-2xl font-bold text-primary ml-2 mr-2">{t(course.priceEn, course.priceAr)}</span>
+            <span className="text-xs line-through text-muted-foreground">{t(course.priceOriginalEn, course.priceOriginalAr)}</span>
+            <span className="text-xl font-bold text-primary ml-2 mr-2">{t(course.priceEn, course.priceAr)}</span>
           </div>
-          <Button size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground">
-            {t("View Details", "عرض التفاصيل")}
+          <Button size="sm" className="bg-primary text-primary-foreground shadow-lg shadow-primary/25 gap-1.5">
+            {t("Explore", "استكشف")}
             {isRtl ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
           </Button>
         </div>
-      </div>
-    </CardContent>
-  </Card>
+      </CardContent>
+    </Card>
+  </motion.div>
 );
 
 // ─── Course Detail View ───
@@ -405,53 +458,91 @@ const CourseDetailView: React.FC<{
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-foreground via-foreground/95 to-foreground/85 text-background py-20 md:py-28">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-            backgroundSize: '30px 30px'
-          }} />
+      <section className="relative overflow-hidden bg-gradient-to-b from-foreground via-foreground/95 to-foreground/85 text-background py-20 md:py-32">
+        {/* Animated gradient orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            className="absolute -top-40 -left-40 w-80 h-80 rounded-full blur-[100px] opacity-20"
+            style={{ background: course.gradientFrom }}
+            animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute -bottom-40 -right-40 w-80 h-80 rounded-full blur-[100px] opacity-15"
+            style={{ background: course.gradientTo }}
+            animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          {/* Back button */}
-          <button
+          <motion.button
             onClick={onBack}
             className="inline-flex items-center gap-2 text-sm text-background/60 hover:text-background transition-colors mb-8"
+            initial={{ opacity: 0, x: isRtl ? 20 : -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
           >
             {isRtl ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
             {t("Back to All Courses", "العودة لجميع الكورسات")}
-          </button>
+          </motion.button>
 
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-3 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full px-6 py-2.5">
-              <Zap size={16} className="text-primary" />
+          <motion.div
+            className="flex justify-center mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="inline-flex items-center gap-3 bg-background/10 backdrop-blur-md border border-background/20 rounded-full px-6 py-2.5">
+              <Sparkles size={16} className="text-primary" />
               <span className="text-sm font-medium text-primary">
                 {t(course.heroTagEn, course.heroTagAr)}
               </span>
             </div>
-          </div>
+          </motion.div>
 
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <motion.h1
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               {t(course.titleEn, course.titleAr)}
-            </h1>
-            <p className="text-xl md:text-2xl opacity-80 mb-4">
+            </motion.h1>
+            <motion.p
+              className="text-xl md:text-2xl opacity-80 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+            >
               {t(course.subtitleEn, course.subtitleAr)}
-            </p>
+            </motion.p>
 
-            <div className="flex items-center justify-center gap-6 mt-8 mb-10 flex-wrap">
-              {course.stats.map((stat, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm opacity-75">
-                  {[Users, Clock, Star, Award][i % 4] && React.createElement([Users, Clock, Star, Award][i % 4], { size: 16, className: "text-primary" })}
-                  <span>{t(stat.valueEn, stat.valueAr)} {t(stat.labelEn, stat.labelAr)}</span>
-                </div>
+            {/* Feature pills in hero */}
+            <motion.div
+              className="flex items-center justify-center gap-3 mt-8 mb-10 flex-wrap"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+            >
+              {course.features.map((f, i) => (
+                <span key={i} className="inline-flex items-center gap-2 text-sm bg-background/10 backdrop-blur-sm border border-background/15 rounded-full px-4 py-2">
+                  <f.icon size={15} className="text-primary" />
+                  {t(f.en, f.ar)}
+                </span>
               ))}
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6" asChild>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.55 }}
+            >
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6 shadow-xl shadow-primary/30" asChild>
                 <a href={course.whatsappLink} target="_blank" rel="noopener noreferrer">
+                  <MessageSquare size={18} />
                   {t("Enroll Now", "سجّل الآن")}
                 </a>
               </Button>
@@ -464,22 +555,29 @@ const CourseDetailView: React.FC<{
                 <Play size={18} />
                 {t("View Curriculum", "عرض المنهج")}
               </Button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-12 border-b border-border bg-muted/30">
+      {/* Stats bar */}
+      <section className="py-10 border-b border-border bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {course.stats.map((stat, i) => (
-              <div key={i} className="text-center">
+              <motion.div key={i} variants={fadeUp} custom={i} className="text-center">
+                <stat.icon size={22} className="mx-auto text-primary mb-2" />
                 <div className="text-3xl md:text-4xl font-bold text-primary">{t(stat.valueEn, stat.valueAr)}</div>
                 <div className="text-sm text-muted-foreground mt-1">{t(stat.labelEn, stat.labelAr)}</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -493,18 +591,15 @@ const CourseDetailView: React.FC<{
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge variant="secondary" className="mb-3">
-              <Play size={14} className="mr-1" />
+            <Badge variant="secondary" className="mb-3 gap-1.5">
+              <Video size={14} />
               {t("Course Promo", "برومو الكورس")}
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               {t("Watch Before You Enroll", "شاهد قبل التسجيل")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t(
-                "Get a sneak peek of what you'll learn and how this course will transform your skills",
-                "ألقِ نظرة سريعة على ما ستتعلمه وكيف سيغير هذا الكورس مهاراتك"
-              )}
+              {t("Get a sneak peek of what you'll learn", "ألقِ نظرة سريعة على ما ستتعلمه")}
             </p>
           </motion.div>
 
@@ -515,7 +610,7 @@ const CourseDetailView: React.FC<{
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-foreground/5 hover:shadow-3xl transition-shadow duration-500">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-foreground/5">
               <div className="aspect-video">
                 {course.vimeoId && !course.vimeoId.startsWith("YOUR_") ? (
                   <iframe
@@ -527,18 +622,17 @@ const CourseDetailView: React.FC<{
                     title={t(course.titleEn, course.titleAr)}
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-foreground/10 to-foreground/5 flex flex-col items-center justify-center gap-4">
+                  <div className="w-full h-full bg-gradient-to-br from-muted/80 to-muted/40 flex flex-col items-center justify-center gap-4">
                     <motion.div
-                      className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20 shadow-lg shadow-primary/10"
+                      animate={{ scale: [1, 1.08, 1] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                     >
                       <Play size={36} className="text-primary ml-1" />
                     </motion.div>
                     <p className="text-muted-foreground text-sm font-medium">
                       {t("Promo video coming soon", "فيديو البرومو قريبًا")}
                     </p>
-                    <span className="text-xs text-muted-foreground/60">Vimeo</span>
                   </div>
                 )}
               </div>
@@ -550,133 +644,225 @@ const CourseDetailView: React.FC<{
       {/* Course Phases */}
       <section id="curriculum" className="py-16 bg-muted/10">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-3">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <Badge variant="secondary" className="mb-3 gap-1.5">
+              <Layers size={14} />
               {t("Advanced Curriculum 2024", "منهج متقدم ٢٠٢٤")}
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               {t("Course Phases", "مراحل الكورس")}
             </h2>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             {course.modules.map((mod, i) => (
-              <Card key={i} className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-border">
-                <CardContent className="p-0">
-                  <div className="p-5 bg-gradient-to-r from-primary/10 to-primary/5 border-b border-border">
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge variant="outline" className="text-xs font-bold">
-                        {t(`Phase ${String(i + 1).padStart(2, '0')}`, `المرحلة ${String(i + 1).padStart(2, '0')}`)}
-                      </Badge>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1"><BookOpen size={12} />{mod.lessons}</span>
-                        <span className="flex items-center gap-1"><Clock size={12} />{mod.duration}</span>
+              <motion.div key={i} variants={fadeUp} custom={i}>
+                <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-border h-full">
+                  <CardContent className="p-0">
+                    <div className="p-5 bg-gradient-to-r from-primary/10 to-transparent border-b border-border">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                            {mod.icon}
+                          </div>
+                          <Badge variant="outline" className="text-xs font-bold">
+                            {t(`Phase ${String(i + 1).padStart(2, '0')}`, `المرحلة ${String(i + 1).padStart(2, '0')}`)}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1"><BookOpen size={12} />{mod.lessons}</span>
+                          <span className="flex items-center gap-1"><Clock size={12} />{mod.duration}</span>
+                        </div>
                       </div>
+                      <h3 className="text-base font-bold text-foreground">{t(mod.titleEn, mod.titleAr)}</h3>
                     </div>
-                    <h3 className="text-lg font-bold text-foreground">{t(mod.titleEn, mod.titleAr)}</h3>
-                  </div>
 
-                  <div className="p-5">
-                    <button
-                      className="w-full flex items-center justify-between text-sm font-medium text-muted-foreground mb-3"
-                      onClick={() => setExpandedModule(expandedModule === i ? null : i)}
-                    >
-                      {t("Topics", "المواضيع")}
-                      {expandedModule === i ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                    </button>
-                    {expandedModule === i && (
-                      <ul className="space-y-2">
-                        {mod.topics.map((topic, j) => (
-                          <li key={j} className="flex items-center gap-2 text-sm text-foreground">
-                            <CheckCircle2 size={14} className="text-primary shrink-0" />
-                            {t(topic.en, topic.ar)}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="p-5">
+                      <button
+                        className="w-full flex items-center justify-between text-sm font-medium text-muted-foreground mb-3 hover:text-foreground transition-colors"
+                        onClick={() => setExpandedModule(expandedModule === i ? null : i)}
+                      >
+                        {t("Topics", "المواضيع")}
+                        {expandedModule === i ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      </button>
+                      {expandedModule === i && (
+                        <motion.ul
+                          className="space-y-2"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {mod.topics.map((topic, j) => (
+                            <li key={j} className="flex items-center gap-2 text-sm text-foreground">
+                              <CheckCircle2 size={14} className="text-primary shrink-0" />
+                              {t(topic.en, topic.ar)}
+                            </li>
+                          ))}
+                        </motion.ul>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Highlights */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              {t("What You'll Learn", "ماذا ستتعلم")}
+              {t("What You'll Achieve", "ماذا ستحقق")}
             </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          </motion.div>
+          <motion.div
+            className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {course.highlights.map((item, i) => (
-              <Card key={i} className="text-center p-6 border-primary/20">
-                <item.icon size={32} className="mx-auto text-primary mb-3" />
-                <div className="text-2xl font-bold text-foreground">{t(item.valueEn, item.valueAr)}</div>
-                <div className="text-sm text-muted-foreground mt-1">{t(item.titleEn, item.titleAr)}</div>
-              </Card>
+              <motion.div key={i} variants={fadeUp} custom={i}>
+                <Card className="text-center p-8 border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <item.icon size={28} className="text-primary" />
+                  </div>
+                  <div className="text-3xl font-bold text-foreground">{t(item.valueEn, item.valueAr)}</div>
+                  <div className="text-sm text-muted-foreground mt-1">{t(item.titleEn, item.titleAr)}</div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Testimonials */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-3">{t("Student Results", "نتائج الطلاب")}</Badge>
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <Badge variant="secondary" className="mb-3 gap-1.5">
+              <Heart size={14} />
+              {t("Student Results", "نتائج الطلاب")}
+            </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               {t("Our Students Don't Just Learn — They Win!", "طلابنا لا يتعلمون فقط — بل يفوزون!")}
             </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          </motion.div>
+
+          <motion.div
+            className="grid md:grid-cols-3 gap-6"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {course.testimonials.map((item, i) => (
-              <Card key={i} className="overflow-hidden hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Users size={20} className="text-primary" />
+              <motion.div key={i} variants={fadeUp} custom={i}>
+                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20">
+                        <UserCheck size={20} className="text-primary" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-foreground">{t(item.nameEn, item.nameAr)}</div>
+                        <Badge className="bg-primary/10 text-primary text-xs border-0">{t(item.resultEn, item.resultAr)}</Badge>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-bold text-foreground">{t(item.nameEn, item.nameAr)}</div>
-                      <Badge className="bg-primary/10 text-primary text-xs">{t(item.resultEn, item.resultAr)}</Badge>
+                    <div className="flex gap-0.5 mb-3">
+                      {[...Array(5)].map((_, s) => <Star key={s} size={14} className="fill-primary text-primary" />)}
                     </div>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">"{t(item.textEn, item.textAr)}"</p>
-                </CardContent>
-              </Card>
+                    <p className="text-muted-foreground text-sm leading-relaxed">"{t(item.textEn, item.textAr)}"</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing CTA */}
-      <section className="py-20 bg-gradient-to-b from-foreground via-foreground/95 to-foreground/90 text-background">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("Ready to Start?", "مستعد للبداية؟")}</h2>
-          <p className="text-lg opacity-80 mb-3 max-w-xl mx-auto">
-            {t(
-              `Join ${course.stats[0].valueEn} students who are already making results.`,
-              `انضم لأكثر من ${course.stats[0].valueAr} طالب يحققون نتائج بالفعل.`
-            )}
-          </p>
+      <section className="relative py-24 overflow-hidden bg-gradient-to-b from-foreground via-foreground/95 to-foreground/90 text-background">
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[150px] opacity-10"
+            style={{ background: course.gradientFrom }}
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 6, repeat: Infinity }}
+          />
+        </div>
 
-          <div className="inline-block bg-background/10 backdrop-blur rounded-2xl p-8 mt-6 border border-background/20">
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("Ready to Start?", "مستعد للبداية؟")}</h2>
+            <p className="text-lg opacity-80 mb-3 max-w-xl mx-auto">
+              {t(
+                `Join ${course.stats[0].valueEn} students already making results.`,
+                `انضم لأكثر من ${course.stats[0].valueAr} طالب يحققون نتائج.`
+              )}
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="inline-block bg-background/10 backdrop-blur-lg rounded-3xl p-10 mt-8 border border-background/20 shadow-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <DollarSign size={28} className="mx-auto text-primary mb-3" />
             <div className="flex items-baseline justify-center gap-2 mb-2">
               <span className="text-lg line-through opacity-50">{t(course.priceOriginalEn, course.priceOriginalAr)}</span>
             </div>
             <div className="text-5xl font-bold text-primary mb-2">{t(course.priceEn, course.priceAr)}</div>
             <p className="text-sm opacity-70 mb-6">{t(course.discountEn, course.discountAr)}</p>
 
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6" asChild>
-              <a href={course.whatsappLink} target="_blank" rel="noopener noreferrer">
-                <MessageSquare size={18} />
-                {t("Enroll via WhatsApp", "سجّل عبر واتساب")}
-              </a>
-            </Button>
-          </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6 shadow-xl shadow-primary/30" asChild>
+                <a href={course.whatsappLink} target="_blank" rel="noopener noreferrer">
+                  <MessageSquare size={18} />
+                  {t("Enroll via WhatsApp", "سجّل عبر واتساب")}
+                </a>
+              </Button>
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex items-center justify-center gap-4 mt-6 text-xs opacity-60">
+              <span className="flex items-center gap-1"><ShieldCheck size={14} /> {t("Secure Payment", "دفع آمن")}</span>
+              <span className="flex items-center gap-1"><Award size={14} /> {t("Certificate", "شهادة")}</span>
+              <span className="flex items-center gap-1"><Heart size={14} /> {t("Lifetime Access", "وصول مدى الحياة")}</span>
+            </div>
+          </motion.div>
         </div>
       </section>
     </>
@@ -697,41 +883,94 @@ const Courses: React.FC = () => {
       {activeCourse ? (
         <CourseDetailView
           course={activeCourse}
-          onBack={() => setSelectedCourse(null)}
+          onBack={() => { setSelectedCourse(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}
           isRtl={isRtl}
           t={t}
         />
       ) : (
         <>
           {/* Courses Landing Hero */}
-          <section className="relative overflow-hidden bg-gradient-to-b from-foreground via-foreground/95 to-foreground/85 text-background py-20 md:py-28">
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0" style={{
-                backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-                backgroundSize: '30px 30px'
-              }} />
+          <section className="relative overflow-hidden bg-gradient-to-b from-foreground via-foreground/95 to-foreground/85 text-background py-24 md:py-32">
+            <div className="absolute inset-0 overflow-hidden">
+              <motion.div
+                className="absolute -top-40 left-1/4 w-80 h-80 rounded-full blur-[120px] opacity-15"
+                style={{ background: "hsl(var(--primary))" }}
+                animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
+                transition={{ duration: 10, repeat: Infinity }}
+              />
+              <motion.div
+                className="absolute -bottom-40 right-1/4 w-60 h-60 rounded-full blur-[100px] opacity-10"
+                style={{ background: "hsl(var(--accent))" }}
+                animate={{ x: [0, -40, 0], y: [0, 30, 0] }}
+                transition={{ duration: 12, repeat: Infinity }}
+              />
             </div>
+
             <div className="container mx-auto px-4 relative z-10 text-center">
-              <Badge className="bg-primary/20 text-primary border-primary/30 mb-6">
-                {t("Professional Courses", "كورسات احترافية")}
-              </Badge>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <Badge className="bg-primary/20 text-primary border-primary/30 mb-6 gap-1.5">
+                  <GraduationCap size={14} />
+                  {t("Professional Courses", "كورسات احترافية")}
+                </Badge>
+              </motion.div>
+
+              <motion.h1
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
                 {t("Level Up Your ", "طوّر ")}
                 <span className="text-primary italic">{t("Marketing Skills", "مهاراتك التسويقية")}</span>
-              </h1>
-              <p className="text-xl md:text-2xl opacity-80 max-w-3xl mx-auto">
+              </motion.h1>
+
+              <motion.p
+                className="text-xl md:text-2xl opacity-80 max-w-3xl mx-auto mb-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.8 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+              >
                 {t(
                   "Choose from our expert-led courses designed to transform you into a top-tier digital marketer",
                   "اختر من كورساتنا المتخصصة المصممة لتحولك إلى مسوّق رقمي من الطراز الأول"
                 )}
-              </p>
+              </motion.p>
+
+              {/* Quick trust strip */}
+              <motion.div
+                className="flex items-center justify-center gap-6 flex-wrap"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                {[
+                  { icon: Users, text: t("3700+ Students", "+٣٧٠٠ طالب") },
+                  { icon: Star, text: t("4.7+ Rating", "تقييم +٤.٧") },
+                  { icon: Award, text: t("200+ Reviews", "+٢٠٠ تقييم") },
+                  { icon: Puzzle, text: t("2 Specialized Tracks", "٢ مسارات متخصصة") },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm opacity-70">
+                    <item.icon size={16} className="text-primary" />
+                    <span>{item.text}</span>
+                  </div>
+                ))}
+              </motion.div>
             </div>
           </section>
 
           {/* Course Selection */}
           <section className="py-20">
             <div className="container mx-auto px-4">
-              <div className="text-center mb-14">
+              <motion.div
+                className="text-center mb-14"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <Badge variant="secondary" className="mb-3 gap-1.5">
+                  <Layers size={14} />
+                  {t("Choose Your Track", "اختر مسارك")}
+                </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
                   {t("Choose Your Path", "اختر مسارك")}
                 </h2>
@@ -741,14 +980,15 @@ const Courses: React.FC = () => {
                     "كورسان متخصصان مصممان لمنحك مهارات ونتائج حقيقية"
                   )}
                 </p>
-              </div>
+              </motion.div>
 
               <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {allCourses.map((course) => (
+                {allCourses.map((course, i) => (
                   <CourseSelectionCard
                     key={course.id}
                     course={course}
-                    onSelect={() => setSelectedCourse(course.id)}
+                    onSelect={() => { setSelectedCourse(course.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    index={i}
                     isRtl={isRtl}
                     t={t}
                   />
@@ -760,25 +1000,71 @@ const Courses: React.FC = () => {
           {/* Why Choose Us */}
           <section className="py-16 bg-muted/30">
             <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
+              <motion.div
+                className="text-center mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
                 <h2 className="text-3xl font-bold text-foreground mb-3">
                   {t("Why Our Courses?", "لماذا كورساتنا؟")}
                 </h2>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              </motion.div>
+
+              <motion.div
+                className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
+                variants={stagger}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
                 {[
-                  { icon: Award, en: "Expert Instructors", ar: "مدربون خبراء", descEn: "Learn from professionals with real market experience", descAr: "تعلّم من محترفين لديهم خبرة سوق حقيقية" },
-                  { icon: Target, en: "Practical Projects", ar: "مشاريع عملية", descEn: "Apply what you learn on real campaigns", descAr: "طبّق ما تتعلمه على حملات حقيقية" },
+                  { icon: GraduationCap, en: "Expert Instructors", ar: "مدربون خبراء", descEn: "Learn from professionals with real market experience", descAr: "تعلّم من محترفين لديهم خبرة سوق حقيقية" },
+                  { icon: Rocket, en: "Practical Projects", ar: "مشاريع عملية", descEn: "Apply what you learn on real campaigns", descAr: "طبّق ما تتعلمه على حملات حقيقية" },
                   { icon: Users, en: "Active Community", ar: "مجتمع نشط", descEn: "Join 3700+ students and network", descAr: "انضم لأكثر من ٣٧٠٠ طالب وتواصل" },
-                  { icon: MessageSquare, en: "Lifetime Support", ar: "دعم مدى الحياة", descEn: "Get help whenever you need it", descAr: "احصل على المساعدة وقتما تحتاج" },
+                  { icon: ShieldCheck, en: "Lifetime Access", ar: "وصول مدى الحياة", descEn: "Get help and updates forever", descAr: "احصل على الدعم والتحديثات للأبد" },
                 ].map((item, i) => (
-                  <Card key={i} className="text-center p-6 hover:shadow-lg transition-shadow">
-                    <item.icon size={28} className="mx-auto text-primary mb-3" />
-                    <h3 className="font-bold text-foreground mb-2">{t(item.en, item.ar)}</h3>
-                    <p className="text-sm text-muted-foreground">{t(item.descEn, item.descAr)}</p>
-                  </Card>
+                  <motion.div key={i} variants={fadeUp} custom={i}>
+                    <Card className="text-center p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full border-border/60">
+                      <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                        <item.icon size={24} className="text-primary" />
+                      </div>
+                      <h3 className="font-bold text-foreground mb-2">{t(item.en, item.ar)}</h3>
+                      <p className="text-sm text-muted-foreground">{t(item.descEn, item.descAr)}</p>
+                    </Card>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* CTA Banner */}
+          <section className="py-16">
+            <div className="container mx-auto px-4">
+              <motion.div
+                className="max-w-4xl mx-auto text-center bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 rounded-3xl p-10 md:p-14 border border-primary/20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <Sparkles size={32} className="mx-auto text-primary mb-4" />
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+                  {t("Not Sure Which Course?", "مش متأكد أي كورس؟")}
+                </h3>
+                <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                  {t(
+                    "Contact us on WhatsApp and we'll help you choose the right path based on your goals",
+                    "تواصل معنا على واتساب وهنساعدك تختار المسار المناسب لأهدافك"
+                  )}
+                </p>
+                <Button size="lg" className="bg-primary text-primary-foreground shadow-xl shadow-primary/25" asChild>
+                  <a href="https://wa.me/201006334062?text=I%20need%20help%20choosing%20a%20course" target="_blank" rel="noopener noreferrer">
+                    <MessageSquare size={18} />
+                    {t("Ask Us on WhatsApp", "اسألنا على واتساب")}
+                  </a>
+                </Button>
+              </motion.div>
             </div>
           </section>
         </>
