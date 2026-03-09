@@ -193,6 +193,7 @@ const whatsappCourse: CourseData = {
   discountEn: "50% off — Limited time offer",
   discountAr: "خصم ٥٠٪ — عرض محدود",
   whatsappLink: "https://wa.me/201006334062?text=I%20want%20to%20enroll%20in%20the%20WhatsApp%20Marketing%20course",
+  vimeoId: "YOUR_WHATSAPP_COURSE_VIMEO_ID",
 };
 
 // ─── Course 2: Digital Marketing, Data Scraping & WhatsApp ───
