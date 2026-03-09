@@ -1,6 +1,7 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import logo from "@/assets/logo.png";
 
 const Footer: React.FC = () => {
   const { t } = useLanguage();

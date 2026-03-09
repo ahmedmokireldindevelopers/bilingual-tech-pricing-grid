@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Mail, Phone, Globe, MessageSquare } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Header: React.FC = () => {
   const { t, toggleLanguage, language, isRtl } = useLanguage();
