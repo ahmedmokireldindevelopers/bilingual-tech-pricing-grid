@@ -16,7 +16,7 @@ const Header: React.FC = () => {
             <div className="flex items-center gap-2">
               <img src={logo} alt="Tech Services Logo" className="h-10 w-10 object-contain" />
               <h1 className="text-xl font-bold">
-                {t("Tech Services", "الخدمات التقنية")}
+                {t("Ahmed Mo Kireldin", "أحمد محمد كيرالدين")}
               </h1>
             </div>
           </div>
