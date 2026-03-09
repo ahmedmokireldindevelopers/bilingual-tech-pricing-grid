@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Mail, Phone, Globe, MessageSquare } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Header: React.FC = () => {
   const { t, toggleLanguage, language, isRtl } = useLanguage();
@@ -13,9 +14,7 @@ const Header: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div className="flex items-center">
             <div className="flex items-center gap-2">
-              <div className="bg-tech-blue text-white p-2 rounded-lg">
-                <span className="font-bold text-xl">TS</span>
-              </div>
+              <img src={logo} alt="Tech Services Logo" className="h-10 w-10 object-contain" />
               <h1 className="text-xl font-bold">
                 {t("Tech Services", "الخدمات التقنية")}
               </h1>
