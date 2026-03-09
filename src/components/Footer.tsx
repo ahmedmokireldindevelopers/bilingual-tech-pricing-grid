@@ -13,9 +13,7 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <div className="flex items-center gap-2">
-              <div className="bg-tech-blue text-white p-1 rounded">
-                <span className="font-bold text-sm">TS</span>
-              </div>
+              <img src={logo} alt="Tech Services Logo" className="h-8 w-8 object-contain" />
               <span className="font-bold">{t("Tech Services", "الخدمات التقنية")}</span>
             </div>
           </div>
