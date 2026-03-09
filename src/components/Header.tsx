@@ -13,14 +13,12 @@ const Header: React.FC = () => {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto py-4 px-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between">
-          <div className="flex items-center">
-            <div className="flex items-center gap-2">
-              <img src={logo} alt="Tech Services Logo" className="h-10 w-10 object-contain" />
-              <h1 className="text-xl font-bold">
-                {t("Ahmed Mo Kireldin", "أحمد محمد كيرالدين")}
-              </h1>
-            </div>
-          </div>
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <img src={logo} alt="Tech Services Logo" className="h-10 w-10 object-contain" />
+            <h1 className="text-xl font-bold">
+              {t("Ahmed Mo Kireldin", "أحمد محمد كيرالدين")}
+            </h1>
+          </Link>
 
           <div className="flex flex-col md:flex-row gap-4 md:items-center mt-4 md:mt-0">
             <div className="flex gap-4">
