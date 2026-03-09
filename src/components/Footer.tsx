@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
           <div className="mb-4 md:mb-0">
             <div className="flex items-center gap-2">
               <img src={logo} alt="Tech Services Logo" className="h-8 w-8 object-contain" />
-              <span className="font-bold">{t("Tech Services", "الخدمات التقنية")}</span>
+              <span className="font-bold">{t("Ahmed Mo Kireldin", "أحمد محمد كيرالدين")}</span>
             </div>
           </div>
           
