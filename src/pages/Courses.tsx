@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import {
   Play, Users, Star, Clock, BookOpen, ChevronDown, ChevronUp,
   MessageSquare, Award, Target, Zap, TrendingUp, CheckCircle2,
@@ -14,7 +17,7 @@ import {
   Send, Wifi, Radio, UserCheck, Heart, Sparkles,
   MousePointerClick, MonitorSmartphone, Megaphone, PieChart,
   Code2, Database, Filter, BrainCircuit, Handshake, DollarSign,
-  LineChart, Workflow, Puzzle, Video
+  LineChart, Workflow, Puzzle, Video, User, AtSign
 } from "lucide-react";
 
 // ─── Animation variants ───
