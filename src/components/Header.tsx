@@ -2,7 +2,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Mail, Phone, Globe, MessageSquare } from "lucide-react";
+import { Mail, Phone, Globe, MessageSquare, Database } from "lucide-react";
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const Header: React.FC = () => {
@@ -37,6 +38,12 @@ const Header: React.FC = () => {
               </a>
             </div>
             
+            <Link to="/data">
+              <Button variant="ghost" className="flex items-center gap-1">
+                <Database size={16} />
+                <span>{t("Data Store", "متجر البيانات")}</span>
+              </Button>
+            </Link>
             <Button 
               onClick={toggleLanguage} 
               variant="outline" 
