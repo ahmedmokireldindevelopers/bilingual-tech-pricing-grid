@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -485,7 +486,13 @@ const CourseDetailView: React.FC<{
       {/* Course Promo Video */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
+          <motion.div
+            className="text-center mb-10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
             <Badge variant="secondary" className="mb-3">
               <Play size={14} className="mr-1" />
               {t("Course Promo", "برومو الكورس")}
@@ -499,10 +506,16 @@ const CourseDetailView: React.FC<{
                 "ألقِ نظرة سريعة على ما ستتعلمه وكيف سيغير هذا الكورس مهاراتك"
               )}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-foreground/5">
+          <motion.div
+            className="max-w-4xl mx-auto"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-foreground/5 hover:shadow-3xl transition-shadow duration-500">
               <div className="aspect-video">
                 {course.vimeoId && !course.vimeoId.startsWith("YOUR_") ? (
                   <iframe
@@ -515,9 +528,13 @@ const CourseDetailView: React.FC<{
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-foreground/10 to-foreground/5 flex flex-col items-center justify-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                    <motion.div
+                      className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
                       <Play size={36} className="text-primary ml-1" />
-                    </div>
+                    </motion.div>
                     <p className="text-muted-foreground text-sm font-medium">
                       {t("Promo video coming soon", "فيديو البرومو قريبًا")}
                     </p>
@@ -526,7 +543,7 @@ const CourseDetailView: React.FC<{
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
