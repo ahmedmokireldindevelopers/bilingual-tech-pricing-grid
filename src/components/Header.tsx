@@ -2,7 +2,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Mail, Phone, Globe, MessageSquare } from "lucide-react";
+import { Mail, Phone, Globe, MessageSquare, Database } from "lucide-react";
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const Header: React.FC = () => {
