@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Database, Mail, Phone, Eye, Download, FileSpreadsheet } from "lucide-react";
+import { useCountUp } from "@/hooks/useCountUp";
 
 export interface DatasetEntry {
   id: string;
@@ -16,6 +17,8 @@ export interface DatasetEntry {
   phones: number;
   categoryEn: string;
   categoryAr: string;
+  countryEn?: string;
+  countryAr?: string;
   previewUrl?: string;
   sampleUrl?: string;
   featured?: boolean;
@@ -25,17 +28,38 @@ interface DatasetCardProps {
   dataset: DatasetEntry;
 }
 
-const formatNumber = (n: number) => {
+const formatAnimatedNumber = (n: number) => {
   if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
   if (n >= 1000) return (n / 1000).toFixed(0) + "K";
   return n.toLocaleString();
+};
+
+const AnimatedStat: React.FC<{ value: number; icon: React.ReactNode; label: string; className?: string }> = ({
+  value,
+  icon,
+  label,
+  className = "",
+}) => {
+  const { count, ref } = useCountUp(value, 1800);
+
+  return (
+    <div ref={ref} className={`text-center ${className}`}>
+      <div className="flex items-center justify-center gap-1 text-primary mb-1">
+        {icon}
+      </div>
+      <div className="text-lg font-bold text-foreground tabular-nums">
+        {formatAnimatedNumber(count)}
+      </div>
+      <div className="text-xs text-muted-foreground">{label}</div>
+    </div>
+  );
 };
 
 const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
   const { t, isRtl } = useLanguage();
 
   return (
-    <Card className={`group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${dataset.featured ? "border-primary/50 ring-1 ring-primary/20" : ""}`}>
+    <Card className={`group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-fade-in ${dataset.featured ? "border-primary/50 ring-1 ring-primary/20" : ""}`}>
       {dataset.featured && (
         <div className="absolute top-3 right-3 z-10">
           <Badge className="bg-primary text-primary-foreground">
@@ -52,6 +76,11 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
           <Badge variant="secondary" className="text-xs">
             {t(dataset.categoryEn, dataset.categoryAr)}
           </Badge>
+          {dataset.countryEn && (
+            <Badge variant="outline" className="text-xs">
+              {t(dataset.countryEn, dataset.countryAr || dataset.countryEn)}
+            </Badge>
+          )}
         </div>
         <CardTitle className="text-lg">
           {t(dataset.titleEn, dataset.titleAr)}
@@ -62,29 +91,24 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
       </CardHeader>
 
       <CardContent className="pb-3">
-        {/* Stats */}
+        {/* Animated Stats */}
         <div className="grid grid-cols-3 gap-3 p-3 bg-muted/50 rounded-lg">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-primary mb-1">
-              <Database size={14} />
-            </div>
-            <div className="text-lg font-bold text-foreground">{formatNumber(dataset.records)}</div>
-            <div className="text-xs text-muted-foreground">{t("Records", "سجل")}</div>
-          </div>
-          <div className="text-center border-x border-border">
-            <div className="flex items-center justify-center gap-1 text-primary mb-1">
-              <Mail size={14} />
-            </div>
-            <div className="text-lg font-bold text-foreground">{formatNumber(dataset.emails)}</div>
-            <div className="text-xs text-muted-foreground">{t("Emails", "بريد")}</div>
-          </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-primary mb-1">
-              <Phone size={14} />
-            </div>
-            <div className="text-lg font-bold text-foreground">{formatNumber(dataset.phones)}</div>
-            <div className="text-xs text-muted-foreground">{t("Phones", "هاتف")}</div>
-          </div>
+          <AnimatedStat
+            value={dataset.records}
+            icon={<Database size={14} />}
+            label={t("Records", "سجل")}
+          />
+          <AnimatedStat
+            value={dataset.emails}
+            icon={<Mail size={14} />}
+            label={t("Emails", "بريد")}
+            className="border-x border-border"
+          />
+          <AnimatedStat
+            value={dataset.phones}
+            icon={<Phone size={14} />}
+            label={t("Phones", "هاتف")}
+          />
         </div>
 
         {/* Preview placeholder */}
