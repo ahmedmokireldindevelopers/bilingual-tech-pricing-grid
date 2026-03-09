@@ -19,52 +19,83 @@ const PartnersSection: React.FC = () => {
   const countries = [
     {
       name: { en: "Egypt", ar: "مصر" },
-      flag: <FlagEgypt />,
+      flagCode: "eg",
       companies: "HQ",
       description: { en: "Our Headquarters", ar: "مقرنا الرئيسي" },
       color: "#CE1126",
+      icons: [
+        { icon: <Building2 size={14} />, label: "Orascom" },
+        { icon: <Smartphone size={14} />, label: "Vodafone EG" },
+        { icon: <Landmark size={14} />, label: "CIB" },
+      ],
     },
     {
       name: { en: "Saudi Arabia", ar: "السعودية" },
-      flag: <FlagSaudi />,
+      flagCode: "sa",
       companies: "10+",
       description: { en: "Largest market", ar: "أكبر سوق" },
       color: "#006C35",
+      icons: [
+        { icon: <Fuel size={14} />, label: "Aramco" },
+        { icon: <Building size={14} />, label: "SABIC" },
+        { icon: <CreditCard size={14} />, label: "Al Rajhi" },
+      ],
     },
     {
       name: { en: "UAE", ar: "الإمارات" },
-      flag: <FlagUAE />,
+      flagCode: "ae",
       companies: "8+",
       description: { en: "Key partner", ar: "شريك رئيسي" },
       color: "#00732F",
+      icons: [
+        { icon: <Plane size={14} />, label: "Emirates" },
+        { icon: <Building2 size={14} />, label: "Emaar" },
+        { icon: <Briefcase size={14} />, label: "Etisalat" },
+      ],
     },
     {
       name: { en: "Oman", ar: "عُمان" },
-      flag: <FlagOman />,
+      flagCode: "om",
       companies: "5+",
       description: { en: "Growing market", ar: "سوق متنامي" },
       color: "#DB161B",
+      icons: [
+        { icon: <Factory size={14} />, label: "OQ" },
+        { icon: <Briefcase size={14} />, label: "Omantel" },
+      ],
     },
     {
       name: { en: "Kuwait", ar: "الكويت" },
-      flag: <FlagKuwait />,
+      flagCode: "kw",
       companies: "3+",
       description: { en: "Active clients", ar: "عملاء نشطون" },
       color: "#007A3D",
+      icons: [
+        { icon: <Landmark size={14} />, label: "NBK" },
+        { icon: <ShoppingBag size={14} />, label: "Alshaya" },
+      ],
     },
     {
       name: { en: "Bahrain", ar: "البحرين" },
-      flag: <FlagBahrain />,
+      flagCode: "bh",
       companies: "2+",
       description: { en: "Expanding", ar: "قيد التوسع" },
       color: "#CE1126",
+      icons: [
+        { icon: <Landmark size={14} />, label: "Ahli Bank" },
+        { icon: <Briefcase size={14} />, label: "Batelco" },
+      ],
     },
     {
       name: { en: "Qatar", ar: "قطر" },
-      flag: <FlagQatar />,
+      flagCode: "qa",
       companies: "2+",
       description: { en: "New market", ar: "سوق جديد" },
       color: "#8A1538",
+      icons: [
+        { icon: <Plane size={14} />, label: "Qatar Airways" },
+        { icon: <Briefcase size={14} />, label: "Ooredoo" },
+      ],
     },
   ];
 
