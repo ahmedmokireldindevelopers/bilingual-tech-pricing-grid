@@ -337,6 +337,7 @@ const digitalMarketingCourse: CourseData = {
   discountEn: "50% off — Limited time offer",
   discountAr: "خصم ٥٠٪ — عرض محدود",
   whatsappLink: "https://wa.me/201006334062?text=I%20want%20to%20enroll%20in%20the%20Digital%20Marketing%20course",
+  vimeoId: "YOUR_DIGITAL_MARKETING_COURSE_VIMEO_ID",
 };
 
 const allCourses = [whatsappCourse, digitalMarketingCourse];
