@@ -54,6 +54,7 @@ interface CourseData {
   discountEn: string;
   discountAr: string;
   whatsappLink: string;
+  vimeoId: string;
 }
 
 // ─── Course 1: WhatsApp Professional ───
@@ -192,6 +193,7 @@ const whatsappCourse: CourseData = {
   discountEn: "50% off — Limited time offer",
   discountAr: "خصم ٥٠٪ — عرض محدود",
   whatsappLink: "https://wa.me/201006334062?text=I%20want%20to%20enroll%20in%20the%20WhatsApp%20Marketing%20course",
+  vimeoId: "YOUR_WHATSAPP_COURSE_VIMEO_ID",
 };
 
 // ─── Course 2: Digital Marketing, Data Scraping & WhatsApp ───
@@ -335,6 +337,7 @@ const digitalMarketingCourse: CourseData = {
   discountEn: "50% off — Limited time offer",
   discountAr: "خصم ٥٠٪ — عرض محدود",
   whatsappLink: "https://wa.me/201006334062?text=I%20want%20to%20enroll%20in%20the%20Digital%20Marketing%20course",
+  vimeoId: "YOUR_DIGITAL_MARKETING_COURSE_VIMEO_ID",
 };
 
 const allCourses = [whatsappCourse, digitalMarketingCourse];
@@ -475,6 +478,54 @@ const CourseDetailView: React.FC<{
                 <div className="text-sm text-muted-foreground mt-1">{t(stat.labelEn, stat.labelAr)}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Course Promo Video */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <Badge variant="secondary" className="mb-3">
+              <Play size={14} className="mr-1" />
+              {t("Course Promo", "برومو الكورس")}
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              {t("Watch Before You Enroll", "شاهد قبل التسجيل")}
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              {t(
+                "Get a sneak peek of what you'll learn and how this course will transform your skills",
+                "ألقِ نظرة سريعة على ما ستتعلمه وكيف سيغير هذا الكورس مهاراتك"
+              )}
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-foreground/5">
+              <div className="aspect-video">
+                {course.vimeoId && !course.vimeoId.startsWith("YOUR_") ? (
+                  <iframe
+                    src={`https://player.vimeo.com/video/${course.vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                    allowFullScreen
+                    title={t(course.titleEn, course.titleAr)}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-foreground/10 to-foreground/5 flex flex-col items-center justify-center gap-4">
+                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                      <Play size={36} className="text-primary ml-1" />
+                    </div>
+                    <p className="text-muted-foreground text-sm font-medium">
+                      {t("Promo video coming soon", "فيديو البرومو قريبًا")}
+                    </p>
+                    <span className="text-xs text-muted-foreground/60">Vimeo</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </section>
