@@ -477,6 +477,156 @@ const CourseSelectionCard: React.FC<{
   </motion.div>
 );
 
+// ─── Registration Form Component ───
+const RegistrationForm: React.FC<{
+  course: CourseData;
+  isRtl: boolean;
+  t: (en: string, ar: string) => string;
+}> = ({ course, isRtl, t }) => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
+      toast({
+        title: t("Please fill all fields", "يرجى ملء جميع الحقول"),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: t("Invalid email address", "بريد إلكتروني غير صالح"),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    // Build WhatsApp message with form data
+    const message = encodeURIComponent(
+      `${t("New Registration Request", "طلب تسجيل جديد")}\n` +
+      `${t("Course", "الكورس")}: ${t(course.titleEn, course.titleAr)}\n` +
+      `${t("Name", "الاسم")}: ${formData.name}\n` +
+      `${t("Email", "البريد")}: ${formData.email}\n` +
+      `${t("Phone", "الهاتف")}: ${formData.phone}`
+    );
+    
+    window.open(`https://wa.me/201006334062?text=${message}`, "_blank");
+
+    toast({
+      title: t("Registration sent!", "تم إرسال التسجيل!"),
+      description: t("We'll contact you soon via WhatsApp.", "سنتواصل معك قريبًا عبر واتساب."),
+    });
+
+    setFormData({ name: "", email: "", phone: "" });
+    setIsSubmitting(false);
+  };
+
+  return (
+    <Card className="border-primary/20 shadow-2xl shadow-primary/5">
+      <CardContent className="p-8">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            <Label htmlFor="reg-name" className="text-foreground font-medium mb-2 flex items-center gap-2">
+              <User size={15} className="text-primary" />
+              {t("Full Name", "الاسم الكامل")}
+            </Label>
+            <Input
+              id="reg-name"
+              placeholder={t("Enter your full name", "أدخل اسمك الكامل")}
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              maxLength={100}
+              className="mt-1.5"
+              dir={isRtl ? "rtl" : "ltr"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <Label htmlFor="reg-email" className="text-foreground font-medium mb-2 flex items-center gap-2">
+              <AtSign size={15} className="text-primary" />
+              {t("Email Address", "البريد الإلكتروني")}
+            </Label>
+            <Input
+              id="reg-email"
+              type="email"
+              placeholder={t("Enter your email", "أدخل بريدك الإلكتروني")}
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              maxLength={255}
+              className="mt-1.5"
+              dir="ltr"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            <Label htmlFor="reg-phone" className="text-foreground font-medium mb-2 flex items-center gap-2">
+              <Phone size={15} className="text-primary" />
+              {t("Phone Number", "رقم الهاتف")}
+            </Label>
+            <Input
+              id="reg-phone"
+              type="tel"
+              placeholder={t("Enter your phone number", "أدخل رقم هاتفك")}
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              maxLength={20}
+              className="mt-1.5"
+              dir="ltr"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg py-6 shadow-xl shadow-primary/25 gap-2"
+              disabled={isSubmitting}
+            >
+              <Send size={18} />
+              {isSubmitting ? t("Sending...", "جاري الإرسال...") : t("Register Now", "سجّل الآن")}
+            </Button>
+          </motion.div>
+
+          <p className="text-xs text-muted-foreground text-center mt-3">
+            {t(
+              "By registering, you agree to be contacted via WhatsApp.",
+              "بالتسجيل، أنت توافق على التواصل معك عبر واتساب."
+            )}
+          </p>
+        </form>
+      </CardContent>
+    </Card>
+  );
+};
+
 // ─── Course Detail View ───
 const CourseDetailView: React.FC<{
   course: CourseData;
