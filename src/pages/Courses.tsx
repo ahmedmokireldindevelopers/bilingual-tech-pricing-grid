@@ -672,42 +672,72 @@ const CourseDetailView: React.FC<{
         </div>
       </section>
 
-      {/* Course Phases */}
-      <section id="curriculum" className="py-16 bg-muted/10">
+      {/* Course Phases - Enhanced Animations */}
+      <section id="curriculum" className="py-16 bg-muted/10 overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6, type: "spring" }}
           >
-            <Badge variant="secondary" className="mb-3 gap-1.5">
-              <Layers size={14} />
-              {t("Advanced Curriculum 2024", "منهج متقدم ٢٠٢٤")}
-            </Badge>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, type: "spring" }}
+            >
+              <Badge variant="secondary" className="mb-3 gap-1.5">
+                <Layers size={14} />
+                {t("Advanced Curriculum 2024", "منهج متقدم ٢٠٢٤")}
+              </Badge>
+            </motion.div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               {t("Course Phases", "مراحل الكورس")}
             </h2>
+            <motion.div
+              className="w-20 h-1 bg-primary rounded-full mx-auto mt-4"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            />
           </motion.div>
 
           <motion.div
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={stagger}
+            variants={staggerSlow}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
           >
             {course.modules.map((mod, i) => (
-              <motion.div key={i} variants={fadeUp} custom={i}>
-                <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-border h-full">
+              <motion.div
+                key={i}
+                variants={scaleUp}
+                custom={i}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              >
+                <Card className="group overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 border-border h-full">
                   <CardContent className="p-0">
-                    <div className="p-5 bg-gradient-to-r from-primary/10 to-transparent border-b border-border">
-                      <div className="flex items-center justify-between mb-3">
+                    <div className="p-5 bg-gradient-to-r from-primary/10 to-transparent border-b border-border relative overflow-hidden">
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent"
+                        initial={{ x: "-100%" }}
+                        whileInView={{ x: "100%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, delay: i * 0.15 }}
+                      />
+                      <div className="flex items-center justify-between mb-3 relative z-10">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                          <motion.div
+                            className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center"
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.6 }}
+                          >
                             {mod.icon}
-                          </div>
+                          </motion.div>
                           <Badge variant="outline" className="text-xs font-bold">
                             {t(`Phase ${String(i + 1).padStart(2, '0')}`, `المرحلة ${String(i + 1).padStart(2, '0')}`)}
                           </Badge>
@@ -717,7 +747,7 @@ const CourseDetailView: React.FC<{
                           <span className="flex items-center gap-1"><Clock size={12} />{mod.duration}</span>
                         </div>
                       </div>
-                      <h3 className="text-base font-bold text-foreground">{t(mod.titleEn, mod.titleAr)}</h3>
+                      <h3 className="text-base font-bold text-foreground relative z-10">{t(mod.titleEn, mod.titleAr)}</h3>
                     </div>
 
                     <div className="p-5">
@@ -726,23 +756,37 @@ const CourseDetailView: React.FC<{
                         onClick={() => setExpandedModule(expandedModule === i ? null : i)}
                       >
                         {t("Topics", "المواضيع")}
-                        {expandedModule === i ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                      </button>
-                      {expandedModule === i && (
-                        <motion.ul
-                          className="space-y-2"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
+                        <motion.span
+                          animate={{ rotate: expandedModule === i ? 180 : 0 }}
                           transition={{ duration: 0.3 }}
                         >
-                          {mod.topics.map((topic, j) => (
-                            <li key={j} className="flex items-center gap-2 text-sm text-foreground">
-                              <CheckCircle2 size={14} className="text-primary shrink-0" />
-                              {t(topic.en, topic.ar)}
-                            </li>
-                          ))}
-                        </motion.ul>
-                      )}
+                          <ChevronDown size={16} />
+                        </motion.span>
+                      </button>
+                      <AnimatePresence>
+                        {expandedModule === i && (
+                          <motion.ul
+                            className="space-y-2 overflow-hidden"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.4, ease: "easeInOut" }}
+                          >
+                            {mod.topics.map((topic, j) => (
+                              <motion.li
+                                key={j}
+                                className="flex items-center gap-2 text-sm text-foreground"
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: j * 0.05 }}
+                              >
+                                <CheckCircle2 size={14} className="text-primary shrink-0" />
+                                {t(topic.en, topic.ar)}
+                              </motion.li>
+                            ))}
+                          </motion.ul>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </CardContent>
                 </Card>
@@ -752,33 +796,58 @@ const CourseDetailView: React.FC<{
         </div>
       </section>
 
-      {/* Highlights */}
-      <section className="py-16">
+      {/* Highlights - Enhanced */}
+      <section className="py-16 overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               {t("What You'll Achieve", "ماذا ستحقق")}
             </h2>
+            <motion.div
+              className="w-20 h-1 bg-primary rounded-full mx-auto mt-4"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            />
           </motion.div>
           <motion.div
             className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-            variants={stagger}
+            variants={staggerSlow}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
             {course.highlights.map((item, i) => (
-              <motion.div key={i} variants={fadeUp} custom={i}>
-                <Card className="text-center p-8 border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <motion.div
+                key={i}
+                variants={scaleUp}
+                custom={i}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <Card className="text-center p-8 border-primary/20 hover:shadow-2xl hover:shadow-primary/15 transition-all duration-300">
+                  <motion.div
+                    className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4"
+                    whileHover={{ rotate: [0, -10, 10, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
                     <item.icon size={28} className="text-primary" />
-                  </div>
-                  <div className="text-3xl font-bold text-foreground">{t(item.valueEn, item.valueAr)}</div>
+                  </motion.div>
+                  <motion.div
+                    className="text-3xl font-bold text-foreground"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.3 + i * 0.1, type: "spring" }}
+                  >
+                    {t(item.valueEn, item.valueAr)}
+                  </motion.div>
                   <div className="text-sm text-muted-foreground mt-1">{t(item.titleEn, item.titleAr)}</div>
                 </Card>
               </motion.div>
@@ -787,46 +856,80 @@ const CourseDetailView: React.FC<{
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 bg-muted/30">
+      {/* Testimonials - Enhanced */}
+      <section className="py-16 bg-muted/30 overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <Badge variant="secondary" className="mb-3 gap-1.5">
-              <Heart size={14} />
-              {t("Student Results", "نتائج الطلاب")}
-            </Badge>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, type: "spring" }}
+            >
+              <Badge variant="secondary" className="mb-3 gap-1.5">
+                <Heart size={14} />
+                {t("Student Results", "نتائج الطلاب")}
+              </Badge>
+            </motion.div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               {t("Our Students Don't Just Learn — They Win!", "طلابنا لا يتعلمون فقط — بل يفوزون!")}
             </h2>
+            <motion.div
+              className="w-20 h-1 bg-primary rounded-full mx-auto mt-4"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            />
           </motion.div>
 
           <motion.div
             className="grid md:grid-cols-3 gap-6"
-            variants={stagger}
+            variants={staggerSlow}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
             {course.testimonials.map((item, i) => (
-              <motion.div key={i} variants={fadeUp} custom={i}>
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
+              <motion.div
+                key={i}
+                variants={scaleUp}
+                custom={i}
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Card className="overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 h-full">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20">
+                      <motion.div
+                        className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                      >
                         <UserCheck size={20} className="text-primary" />
-                      </div>
+                      </motion.div>
                       <div>
                         <div className="font-bold text-foreground">{t(item.nameEn, item.nameAr)}</div>
                         <Badge className="bg-primary/10 text-primary text-xs border-0">{t(item.resultEn, item.resultAr)}</Badge>
                       </div>
                     </div>
                     <div className="flex gap-0.5 mb-3">
-                      {[...Array(5)].map((_, s) => <Star key={s} size={14} className="fill-primary text-primary" />)}
+                      {[...Array(5)].map((_, s) => (
+                        <motion.div
+                          key={s}
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.4 + s * 0.08 }}
+                        >
+                          <Star size={14} className="fill-primary text-primary" />
+                        </motion.div>
+                      ))}
                     </div>
                     <p className="text-muted-foreground text-sm leading-relaxed">"{t(item.textEn, item.textAr)}"</p>
                   </CardContent>
@@ -837,7 +940,64 @@ const CourseDetailView: React.FC<{
         </div>
       </section>
 
-      {/* Pricing CTA */}
+      {/* Registration Form */}
+      <section id="register" className="py-16 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto items-center">
+            <motion.div
+              initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, type: "spring" }}
+            >
+              <Badge variant="secondary" className="mb-3 gap-1.5">
+                <GraduationCap size={14} />
+                {t("Register Now", "سجّل الآن")}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                {t("Start Your Journey Today", "ابدأ رحلتك اليوم")}
+              </h2>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                {t(
+                  "Fill in the form and our team will contact you within 24 hours to help you enroll and start learning.",
+                  "املأ النموذج وسيتواصل معك فريقنا خلال ٢٤ ساعة لمساعدتك في التسجيل وبدء التعلم."
+                )}
+              </p>
+              <div className="space-y-4">
+                {[
+                  { icon: CheckCircle2, en: "Lifetime access to all course content", ar: "وصول مدى الحياة لكل محتوى الكورس" },
+                  { icon: CheckCircle2, en: "Certificate upon completion", ar: "شهادة عند الإتمام" },
+                  { icon: CheckCircle2, en: "Private community & mentorship", ar: "مجتمع خاص وإرشاد" },
+                  { icon: CheckCircle2, en: "Real project experience", ar: "خبرة مشاريع حقيقية" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-center gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                  >
+                    <item.icon size={18} className="text-primary shrink-0" />
+                    <span className="text-sm text-foreground">{t(item.en, item.ar)}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: isRtl ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, type: "spring", delay: 0.1 }}
+            >
+              <RegistrationForm course={course} isRtl={isRtl} t={t} />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing CTA - Enhanced */}
       <section className="relative py-24 overflow-hidden bg-gradient-to-b from-foreground via-foreground/95 to-foreground/90 text-background">
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -846,15 +1006,29 @@ const CourseDetailView: React.FC<{
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ duration: 6, repeat: Infinity }}
           />
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-[300px] h-[300px] rounded-full blur-[120px] opacity-5"
+            style={{ background: course.gradientTo }}
+            animate={{ scale: [1.2, 1, 1.2], x: [0, 30, 0] }}
+            transition={{ duration: 8, repeat: Infinity }}
+          />
         </div>
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, type: "spring" }}
           >
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, type: "spring", delay: 0.1 }}
+            >
+              <Sparkles size={32} className="mx-auto text-primary mb-4" />
+            </motion.div>
             <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("Ready to Start?", "مستعد للبداية؟")}</h2>
             <p className="text-lg opacity-80 mb-3 max-w-xl mx-auto">
               {t(
@@ -866,33 +1040,65 @@ const CourseDetailView: React.FC<{
 
           <motion.div
             className="inline-block bg-background/10 backdrop-blur-lg rounded-3xl p-10 mt-8 border border-background/20 shadow-2xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.85, y: 30 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.2, type: "spring" }}
           >
-            <DollarSign size={28} className="mx-auto text-primary mb-3" />
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <DollarSign size={28} className="mx-auto text-primary mb-3" />
+            </motion.div>
             <div className="flex items-baseline justify-center gap-2 mb-2">
               <span className="text-lg line-through opacity-50">{t(course.priceOriginalEn, course.priceOriginalAr)}</span>
             </div>
-            <div className="text-5xl font-bold text-primary mb-2">{t(course.priceEn, course.priceAr)}</div>
+            <motion.div
+              className="text-5xl font-bold text-primary mb-2"
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4, type: "spring" }}
+            >
+              {t(course.priceEn, course.priceAr)}
+            </motion.div>
             <p className="text-sm opacity-70 mb-6">{t(course.discountEn, course.discountAr)}</p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6 shadow-xl shadow-primary/30" asChild>
-                <a href={course.whatsappLink} target="_blank" rel="noopener noreferrer">
-                  <MessageSquare size={18} />
-                  {t("Enroll via WhatsApp", "سجّل عبر واتساب")}
-                </a>
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6 shadow-xl shadow-primary/30" asChild>
+                  <a href={course.whatsappLink} target="_blank" rel="noopener noreferrer">
+                    <MessageSquare size={18} />
+                    {t("Enroll via WhatsApp", "سجّل عبر واتساب")}
+                  </a>
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-background/30 text-background hover:bg-background/10 text-lg px-10 py-6"
+                  onClick={() => document.getElementById("register")?.scrollIntoView({ behavior: "smooth" })}
+                >
+                  <Mail size={18} />
+                  {t("Register Now", "سجّل الآن")}
+                </Button>
+              </motion.div>
             </div>
 
             {/* Trust badges */}
-            <div className="flex items-center justify-center gap-4 mt-6 text-xs opacity-60">
+            <motion.div
+              className="flex items-center justify-center gap-4 mt-6 text-xs opacity-60"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 0.6 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
               <span className="flex items-center gap-1"><ShieldCheck size={14} /> {t("Secure Payment", "دفع آمن")}</span>
               <span className="flex items-center gap-1"><Award size={14} /> {t("Certificate", "شهادة")}</span>
               <span className="flex items-center gap-1"><Heart size={14} /> {t("Lifetime Access", "وصول مدى الحياة")}</span>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
