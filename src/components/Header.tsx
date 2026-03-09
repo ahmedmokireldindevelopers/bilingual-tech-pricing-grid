@@ -44,6 +44,12 @@ const Header: React.FC = () => {
                 <span>{t("Data Store", "متجر البيانات")}</span>
               </Button>
             </Link>
+            <Link to="/courses">
+              <Button variant="ghost" className="flex items-center gap-1">
+                <GraduationCap size={16} />
+                <span>{t("Courses", "الكورسات")}</span>
+              </Button>
+            </Link>
             <Button 
               onClick={toggleLanguage} 
               variant="outline" 

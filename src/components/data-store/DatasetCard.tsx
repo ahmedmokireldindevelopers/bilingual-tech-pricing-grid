@@ -6,6 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { Database, Mail, Phone, Eye, Download, FileSpreadsheet } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 
+const countryFlags: Record<string, string> = {
+  "Saudi Arabia": "🇸🇦",
+  "UAE": "🇦🇪",
+  "Egypt": "🇪🇬",
+  "Kuwait": "🇰🇼",
+  "Oman": "🇴🇲",
+  "GCC": "🇸🇦",
+  "MENA": "🌍",
+  "Arab World": "🌍",
+  "Bahrain": "🇧🇭",
+  "Qatar": "🇶🇦",
+};
+
 export interface DatasetEntry {
   id: string;
   titleEn: string;
@@ -57,6 +70,7 @@ const AnimatedStat: React.FC<{ value: number; icon: React.ReactNode; label: stri
 
 const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
   const { t, isRtl } = useLanguage();
+  const flag = dataset.countryEn ? countryFlags[dataset.countryEn] : null;
 
   return (
     <Card className={`group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-fade-in ${dataset.featured ? "border-primary/50 ring-1 ring-primary/20" : ""}`}>
@@ -77,7 +91,8 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
             {t(dataset.categoryEn, dataset.categoryAr)}
           </Badge>
           {dataset.countryEn && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs gap-1">
+              {flag && <span className="text-sm">{flag}</span>}
               {t(dataset.countryEn, dataset.countryAr || dataset.countryEn)}
             </Badge>
           )}
@@ -91,7 +106,6 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
       </CardHeader>
 
       <CardContent className="pb-3">
-        {/* Animated Stats */}
         <div className="grid grid-cols-3 gap-3 p-3 bg-muted/50 rounded-lg">
           <AnimatedStat
             value={dataset.records}
@@ -111,7 +125,6 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
           />
         </div>
 
-        {/* Preview placeholder */}
         <div className="mt-3 h-28 bg-muted/30 rounded-lg border border-dashed border-border flex items-center justify-center">
           <span className="text-xs text-muted-foreground">{t("Preview coming soon", "المعاينة قريبًا")}</span>
         </div>
