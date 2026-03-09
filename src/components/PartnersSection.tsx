@@ -1,69 +1,16 @@
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Globe, MapPin } from "lucide-react";
+import { Globe, MapPin, Building2, Landmark, ShoppingBag, Briefcase, Factory, Plane, Fuel, CreditCard, Smartphone, Building } from "lucide-react";
 
-// SVG Flag components for crisp rendering
-const FlagEgypt = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="13.3" fill="#CE1126"/>
-    <rect y="13.3" width="60" height="13.4" fill="#FFFFFF"/>
-    <rect y="26.7" width="60" height="13.3" fill="#111111"/>
-    <g transform="translate(30,20)">
-      <path d="M-4,-4 L0,-6 L4,-4 L4,4 L-4,4 Z" fill="#C09300" stroke="#C09300" strokeWidth="0.5"/>
-    </g>
-  </svg>
-);
-
-const FlagSaudi = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="40" fill="#006C35"/>
-    <text x="30" y="20" textAnchor="middle" fill="white" fontSize="8" fontFamily="serif" dominantBaseline="middle">لا إله إلا الله</text>
-    <rect x="18" y="25" width="24" height="2" rx="1" fill="white"/>
-  </svg>
-);
-
-const FlagUAE = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="13.3" fill="#00732F"/>
-    <rect y="13.3" width="60" height="13.4" fill="#FFFFFF"/>
-    <rect y="26.7" width="60" height="13.3" fill="#111111"/>
-    <rect width="15" height="40" fill="#FF0000"/>
-  </svg>
-);
-
-const FlagOman = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="13.3" fill="#FFFFFF"/>
-    <rect y="13.3" width="60" height="13.4" fill="#DB161B"/>
-    <rect y="26.7" width="60" height="13.3" fill="#008000"/>
-    <rect width="15" height="40" fill="#DB161B"/>
-    <g transform="translate(7.5,6)">
-      <path d="M-3,0 L0,-3 L3,0 L0,3Z" fill="white" transform="scale(0.8)"/>
-    </g>
-  </svg>
-);
-
-const FlagKuwait = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="13.3" fill="#007A3D"/>
-    <rect y="13.3" width="60" height="13.4" fill="#FFFFFF"/>
-    <rect y="26.7" width="60" height="13.3" fill="#CE1126"/>
-    <path d="M0,0 L15,13.3 L15,26.7 L0,40 Z" fill="#000000"/>
-  </svg>
-);
-
-const FlagBahrain = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="40" fill="#CE1126"/>
-    <path d="M20,0 L15,4 L20,8 L15,12 L20,16 L15,20 L20,24 L15,28 L20,32 L15,36 L20,40 L0,40 L0,0 Z" fill="#FFFFFF"/>
-  </svg>
-);
-
-const FlagQatar = () => (
-  <svg viewBox="0 0 60 40" className="w-full h-full rounded-md shadow-sm">
-    <rect width="60" height="40" fill="#8A1538"/>
-    <path d="M20,0 L15,3.6 L20,7.2 L15,10.8 L20,14.4 L15,18 L20,21.6 L15,25.2 L20,28.8 L15,32.4 L20,36 L15,40 L0,40 L0,0 Z" fill="#FFFFFF"/>
-  </svg>
+// Lightweight flag images from flagcdn.com (open-source, CDN-hosted, tiny file size)
+const FlagIcon: React.FC<{ code: string; alt: string }> = ({ code, alt }) => (
+  <img
+    src={`https://flagcdn.com/w160/${code}.png`}
+    srcSet={`https://flagcdn.com/w320/${code}.png 2x`}
+    alt={alt}
+    className="w-full h-full object-cover rounded-lg shadow-sm"
+    loading="lazy"
+  />
 );
 
 const PartnersSection: React.FC = () => {
