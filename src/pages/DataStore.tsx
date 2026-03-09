@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DataStoreHero from "@/components/data-store/DataStoreHero";
 import DatasetCard, { DatasetEntry } from "@/components/data-store/DatasetCard";
 import DataStoreCTA from "@/components/data-store/DataStoreCTA";
+import DataStorePricing from "@/components/data-store/DataStorePricing";
 import { Badge } from "@/components/ui/badge";
-import { Shield, RefreshCw, Headphones } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Shield, RefreshCw, Headphones, Filter, X } from "lucide-react";
 
 const datasets: DatasetEntry[] = [
   {
@@ -20,6 +22,8 @@ const datasets: DatasetEntry[] = [
     phones: 110000,
     categoryEn: "Company Directory",
     categoryAr: "دليل شركات",
+    countryEn: "Saudi Arabia",
+    countryAr: "السعودية",
     featured: true,
   },
   {
@@ -33,6 +37,8 @@ const datasets: DatasetEntry[] = [
     phones: 88000,
     categoryEn: "Company Directory",
     categoryAr: "دليل شركات",
+    countryEn: "UAE",
+    countryAr: "الإمارات",
     featured: true,
   },
   {
@@ -46,6 +52,8 @@ const datasets: DatasetEntry[] = [
     phones: 42000,
     categoryEn: "Marketing",
     categoryAr: "تسويق",
+    countryEn: "Egypt",
+    countryAr: "مصر",
   },
   {
     id: "4",
@@ -58,6 +66,8 @@ const datasets: DatasetEntry[] = [
     phones: 63000,
     categoryEn: "Construction",
     categoryAr: "مقاولات",
+    countryEn: "GCC",
+    countryAr: "الخليج",
   },
   {
     id: "5",
@@ -70,6 +80,8 @@ const datasets: DatasetEntry[] = [
     phones: 35000,
     categoryEn: "Healthcare",
     categoryAr: "رعاية صحية",
+    countryEn: "MENA",
+    countryAr: "الشرق الأوسط",
   },
   {
     id: "6",
@@ -82,11 +94,83 @@ const datasets: DatasetEntry[] = [
     phones: 22000,
     categoryEn: "E-Commerce",
     categoryAr: "تجارة إلكترونية",
+    countryEn: "Arab World",
+    countryAr: "العالم العربي",
+  },
+  {
+    id: "7",
+    titleEn: "Kuwait Business Directory",
+    titleAr: "دليل أعمال الكويت",
+    descriptionEn: "Complete directory of Kuwaiti businesses and commercial establishments.",
+    descriptionAr: "دليل شامل للأعمال والمنشآت التجارية في الكويت.",
+    records: 32000,
+    emails: 24000,
+    phones: 30000,
+    categoryEn: "Company Directory",
+    categoryAr: "دليل شركات",
+    countryEn: "Kuwait",
+    countryAr: "الكويت",
+  },
+  {
+    id: "8",
+    titleEn: "Real Estate Companies MENA",
+    titleAr: "شركات العقارات - الشرق الأوسط",
+    descriptionEn: "Real estate developers, agents, and property management companies across MENA.",
+    descriptionAr: "مطورون عقاريون ووكلاء وشركات إدارة عقارات في الشرق الأوسط.",
+    records: 41000,
+    emails: 33000,
+    phones: 39000,
+    categoryEn: "Real Estate",
+    categoryAr: "عقارات",
+    countryEn: "MENA",
+    countryAr: "الشرق الأوسط",
+  },
+  {
+    id: "9",
+    titleEn: "Oman Trade & Industry",
+    titleAr: "التجارة والصناعة في عُمان",
+    descriptionEn: "Industrial and trade companies operating in Oman with verified contacts.",
+    descriptionAr: "شركات صناعية وتجارية تعمل في عُمان مع بيانات اتصال موثقة.",
+    records: 19000,
+    emails: 14000,
+    phones: 17000,
+    categoryEn: "Industry",
+    categoryAr: "صناعة",
+    countryEn: "Oman",
+    countryAr: "عُمان",
   },
 ];
 
 const DataStore: React.FC = () => {
   const { t, isRtl } = useLanguage();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+  const categories = useMemo(() => {
+    const unique = [...new Set(datasets.map((d) => d.categoryEn))];
+    return unique.map((cat) => ({
+      en: cat,
+      ar: datasets.find((d) => d.categoryEn === cat)?.categoryAr || cat,
+    }));
+  }, []);
+
+  const countries = useMemo(() => {
+    const unique = [...new Set(datasets.map((d) => d.countryEn).filter(Boolean))];
+    return unique.map((c) => ({
+      en: c!,
+      ar: datasets.find((d) => d.countryEn === c)?.countryAr || c!,
+    }));
+  }, []);
+
+  const filtered = useMemo(() => {
+    return datasets.filter((d) => {
+      if (selectedCategory && d.categoryEn !== selectedCategory) return false;
+      if (selectedCountry && d.countryEn !== selectedCountry) return false;
+      return true;
+    });
+  }, [selectedCategory, selectedCountry]);
+
+  const hasFilters = selectedCategory || selectedCountry;
 
   return (
     <div className={`min-h-screen bg-background ${isRtl ? "rtl" : "ltr"}`} dir={isRtl ? "rtl" : "ltr"}>
@@ -129,15 +213,102 @@ const DataStore: React.FC = () => {
             </p>
           </div>
 
+          {/* Filters */}
+          <div className="mb-8 p-4 bg-muted/30 rounded-xl border border-border">
+            <div className="flex items-center gap-2 mb-3">
+              <Filter size={16} className="text-primary" />
+              <span className="text-sm font-semibold text-foreground">
+                {t("Filter by", "تصفية حسب")}
+              </span>
+              {hasFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-muted-foreground ml-auto"
+                  onClick={() => { setSelectedCategory(null); setSelectedCountry(null); }}
+                >
+                  <X size={14} />
+                  {t("Clear all", "مسح الكل")}
+                </Button>
+              )}
+            </div>
+
+            {/* Category filters */}
+            <div className="mb-3">
+              <span className="text-xs text-muted-foreground mb-2 block">
+                {t("Category", "الفئة")}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <Button
+                    key={cat.en}
+                    variant={selectedCategory === cat.en ? "default" : "outline"}
+                    size="sm"
+                    className="text-xs h-8 rounded-full"
+                    onClick={() => setSelectedCategory(selectedCategory === cat.en ? null : cat.en)}
+                  >
+                    {t(cat.en, cat.ar)}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Country filters */}
+            <div>
+              <span className="text-xs text-muted-foreground mb-2 block">
+                {t("Country / Region", "الدولة / المنطقة")}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {countries.map((c) => (
+                  <Button
+                    key={c.en}
+                    variant={selectedCountry === c.en ? "default" : "outline"}
+                    size="sm"
+                    className="text-xs h-8 rounded-full"
+                    onClick={() => setSelectedCountry(selectedCountry === c.en ? null : c.en)}
+                  >
+                    {t(c.en, c.ar)}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Results count */}
+          <div className="mb-4 text-sm text-muted-foreground">
+            {t(
+              `Showing ${filtered.length} of ${datasets.length} datasets`,
+              `عرض ${filtered.length} من ${datasets.length} قاعدة بيانات`
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {datasets.map((dataset) => (
+            {filtered.map((dataset) => (
               <DatasetCard key={dataset.id} dataset={dataset} />
             ))}
           </div>
+
+          {filtered.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground text-lg">
+                {t("No datasets match your filters.", "لا توجد نتائج تطابق الفلاتر.")}
+              </p>
+              <Button
+                variant="outline"
+                className="mt-4"
+                onClick={() => { setSelectedCategory(null); setSelectedCountry(null); }}
+              >
+                {t("Clear filters", "مسح الفلاتر")}
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Pricing CTA */}
+      {/* Pricing Section */}
+      <DataStorePricing />
+
+      {/* Custom CTA */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
