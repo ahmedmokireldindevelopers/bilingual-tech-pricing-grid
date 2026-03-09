@@ -30,8 +30,36 @@ const fadeUp = {
   }),
 };
 
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.6 } },
+};
+
+const scaleUp = {
+  hidden: { opacity: 0, scale: 0.85 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, delay: i * 0.12, type: "spring", stiffness: 100 },
+  }),
+};
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, type: "spring", stiffness: 80 } },
+};
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, type: "spring", stiffness: 80 } },
+};
+
 const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const staggerSlow = {
+  visible: { transition: { staggerChildren: 0.15 } },
 };
 
 // ─── Course Data Types ───
